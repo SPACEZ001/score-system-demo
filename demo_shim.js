@@ -21,6 +21,7 @@
   d.style.cssText='position:fixed;left:50%;top:60px;transform:translateX(-50%);background:#1e293b;color:#fff;padding:12px 20px;border-radius:12px;z-index:99;font-size:14px';
   document.body.appendChild(d);setTimeout(()=>d.remove(),2500);}
  function handle(form){
+  if(window.STATIC_PATH==='/login'){const r=form.elements['role'].value;location.href=(r==='student')?MAP['/me']:'dashboard.html';return;}
   if((form.method||'get').toLowerCase()==='post'){toast('นี่คือเว็บตัวอย่างสำหรับดูเท่านั้น บันทึกข้อมูลไม่ได้ค่ะ');return;}
   const sp=new URLSearchParams(new FormData(form));
   const path=form.getAttribute('action')||window.STATIC_PATH;
