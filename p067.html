@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>โรงเรียนดวงดาววิทยา (ตัวอย่าง)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Prompt','sans-serif']}}}}</script>
+<style type="text/tailwindcss">
+@layer components{
+ .btn{@apply inline-flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition cursor-pointer}
+ .btn-gray{@apply bg-white text-slate-700 border border-slate-200 hover:bg-slate-50}
+ .btn-red{@apply bg-rose-500 text-white hover:bg-rose-600}
+ .btn-sm{@apply px-3 py-1 text-xs}
+ .inp{@apply w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300}
+ .card{@apply bg-white rounded-2xl shadow-sm border border-slate-100 p-5}
+ .tb{@apply w-full text-sm}
+ .tb th{@apply bg-indigo-50 text-indigo-800 text-left px-3 py-2 font-semibold whitespace-nowrap}
+ .tb td{@apply px-3 py-2 border-b border-slate-100}
+ .tb tbody tr:hover{@apply bg-slate-50}
+ .pill{@apply inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-700}
+}
+</style>
+<style>
+ @media print{ aside,.no-print{display:none!important} body{background:#fff!important} main{padding:0!important}
+  .card{box-shadow:none!important;border:none!important} .tb th,.tb td{border:1px solid #cbd5e1} .tb th{background:#eef2ff!important;-webkit-print-color-adjust:exact} }
+ dialog::backdrop{background:rgba(15,23,42,.5)}
+</style><script>window.STATIC_PATH="/scores";</script><script src="demo_map.js"></script><script src="demo_shim.js"></script></head>
+<body class="bg-slate-100 font-sans text-slate-800"><div style="position:sticky;top:0;z-index:50;background:#f59e0b;color:#fff;text-align:center;padding:6px 10px;font-size:13px">🔎 เว็บตัวอย่างสำหรับดูเท่านั้น — บันทึก/แก้ไขข้อมูลไม่ได้ · ข้อมูลทั้งหมดเป็นข้อมูลสมมติ (ตัวระบบจริงเขียนด้วย Python)</div>
+
+<div class="md:flex min-h-screen">
+ <aside class="md:w-60 shrink-0 bg-gradient-to-b from-indigo-700 to-violet-800 text-white p-4 md:p-5">
+  <div class="text-lg font-bold mb-1">🎓 โรงเรียนดวงดาววิทยา (ตัวอย่าง)</div>
+  <div class="text-xs text-indigo-200 mb-4">แอดมิน (แอดมิน)</div>
+  <nav class="flex md:block gap-1 overflow-x-auto">
+  
+   <a href="dashboard.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">🏠 ภาพรวม</a>
+  
+   <a href="students.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">👩‍🎓 รายชื่อนักเรียน</a>
+  
+   <a href="scores.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 bg-white/20 font-semibold">✏️ กรอกคะแนน</a>
+  
+   <a href="reports.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">🖨️ รายงาน / พิมพ์เอกสาร</a>
+  
+   <a href="p001.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">📊 ตารางคะแนนรวม</a>
+  
+   <a href="subjects.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">📚 วิชาและงาน</a>
+  
+   <a href="classes.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">🏫 ชั้นและห้อง</a>
+  
+   <a href="settings.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">⚙️ ตัดเกรด</a>
+  
+   <a href="school.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">🏛️ ข้อมูลโรงเรียน</a>
+  
+   <a href="teachers.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">👨‍🏫 จัดการครู</a>
+  
+   <a href="index.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm hover:bg-white/10 md:mt-6">🚪 ออกจากระบบ</a>
+  </nav>
+ </aside>
+ <main class="flex-1 p-4 md:p-8 min-w-0">
+
+ 
+ 
+<h1 class="text-2xl font-bold mb-4">กรอกคะแนน</h1>
+<form method="get" class="card mb-4 grid md:grid-cols-3 gap-3 no-print">
+ <select name="subject" class="inp" onchange="this.form.room.value='';this.form.submit()">
+  <option value="">— เลือกวิชา —</option>
+  <option value="s1" >ม.1 · ท211101 ภาษาไทย</option><option value="s2" >ม.1 · ค211101 คณิตศาสตร์</option><option value="s3" >ม.1 · ว211101 วิทยาศาสตร์</option><option value="s5" >ม.2 · ท221101 ภาษาไทย</option><option value="s6" >ม.2 · ค221101 คณิตศาสตร์</option><option value="s7" >ม.2 · ว221101 วิทยาศาสตร์</option><option value="s9" >ม.3 · ท231101 ภาษาไทย</option><option value="s10" >ม.3 · ค231101 คณิตศาสตร์</option><option value="s11" >ม.3 · ว231101 วิทยาศาสตร์</option><option value="s13" >ม.4 · ท241101 ภาษาไทย</option><option value="s14" >ม.4 · ค241101 คณิตศาสตร์</option><option value="s15" >ม.4 · ว241101 วิทยาศาสตร์</option><option value="s17" >ม.5 · ท251101 ภาษาไทย</option><option value="s18" >ม.5 · ค251101 คณิตศาสตร์</option><option value="s19" >ม.5 · ว251101 วิทยาศาสตร์</option><option value="s21" >ม.6 · ท261101 ภาษาไทย</option><option value="s22" selected>ม.6 · ค261101 คณิตศาสตร์</option><option value="s23" >ม.6 · ว261101 วิทยาศาสตร์</option></select>
+ <select name="room" class="inp" onchange="this.form.submit()"><option value="">ทุกห้อง</option>
+  <option >1</option><option >2</option></select>
+ <input id="q" class="inp" placeholder="🔍 ค้นหาชื่อ/รหัส" oninput="applyFilter()">
+</form>
+
+<form method="post" class="card overflow-x-auto">
+ <input type="hidden" name="subject" value="s22"><input type="hidden" name="room" value="">
+ <div class="flex flex-wrap justify-between gap-2 mb-3"><div class="font-semibold">ค261101 คณิตศาสตร์ · ม.6</div>
+  <div class="flex gap-2"><span data-exportbar="tbl"></span><button class="btn btn-sm">💾 บันทึกคะแนน</button></div></div>
+ <table id="tbl" class="tb" data-title="คะแนน คณิตศาสตร์ ม.6" data-sub="ค261101 คณิตศาสตร์">
+  <thead><tr><th>รหัส</th><th>ชื่อ-สกุล</th><th>ห้อง</th><th>คะแนนเก็บ (30)</th><th>สอบกลางภาค (20)</th><th>สอบปลายภาค (50)</th><th>รวม</th><th>เกรด</th></tr></thead>
+  <tbody><tr data-text="66101 นาย สมชาย พยายาม" data-max="100">
+   <td>66101</td><td>นาย สมชาย พยายาม</td><td>1</td>
+   <td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="30" name="sc_66101_t1" value="20"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="20" name="sc_66101_t2" value="12"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="50" name="sc_66101_t3" value="29"></td>
+   <td class="tot font-semibold">61</td><td class="gr"><span class="pill">2</span></td></tr><tr data-text="66102 น.ส. สุภาพร ใจงาม" data-max="100">
+   <td>66102</td><td>น.ส. สุภาพร ใจงาม</td><td>1</td>
+   <td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="30" name="sc_66102_t1" value="19"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="20" name="sc_66102_t2" value="15"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="50" name="sc_66102_t3" value="37"></td>
+   <td class="tot font-semibold">71</td><td class="gr"><span class="pill">3</span></td></tr><tr data-text="66103 น.ส. มานี ศรีสุข" data-max="100">
+   <td>66103</td><td>น.ส. มานี ศรีสุข</td><td>1</td>
+   <td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="30" name="sc_66103_t1" value="14"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="20" name="sc_66103_t2" value="10"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="50" name="sc_66103_t3" value="26"></td>
+   <td class="tot font-semibold">50</td><td class="gr"><span class="pill">1</span></td></tr><tr data-text="66104 นาย สมชาย ศรีสุข" data-max="100">
+   <td>66104</td><td>นาย สมชาย ศรีสุข</td><td>1</td>
+   <td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="30" name="sc_66104_t1" value="26"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="20" name="sc_66104_t2" value="20"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="50" name="sc_66104_t3" value="39"></td>
+   <td class="tot font-semibold">85</td><td class="gr"><span class="pill">4</span></td></tr><tr data-text="66105 นาย ธนกร มั่นคง" data-max="100">
+   <td>66105</td><td>นาย ธนกร มั่นคง</td><td>1</td>
+   <td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="30" name="sc_66105_t1" value="25"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="20" name="sc_66105_t2" value="18"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="50" name="sc_66105_t3" value="46"></td>
+   <td class="tot font-semibold">89</td><td class="gr"><span class="pill">4</span></td></tr><tr data-text="66106 น.ส. สุภาพร สุขใจ" data-max="100">
+   <td>66106</td><td>น.ส. สุภาพร สุขใจ</td><td>1</td>
+   <td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="30" name="sc_66106_t1" value="19"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="20" name="sc_66106_t2" value="14"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="50" name="sc_66106_t3" value="39"></td>
+   <td class="tot font-semibold">72</td><td class="gr"><span class="pill">3</span></td></tr><tr data-text="66107 นาย พงษ์พัฒน์ ศรีสุข" data-max="100">
+   <td>66107</td><td>นาย พงษ์พัฒน์ ศรีสุข</td><td>1</td>
+   <td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="30" name="sc_66107_t1" value="19"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="20" name="sc_66107_t2" value="10"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="50" name="sc_66107_t3" value="24"></td>
+   <td class="tot font-semibold">53</td><td class="gr"><span class="pill">1</span></td></tr><tr data-text="66108 นาย รัชชานนท์ ไพเราะ" data-max="100">
+   <td>66108</td><td>นาย รัชชานนท์ ไพเราะ</td><td>1</td>
+   <td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="30" name="sc_66108_t1" value="22"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="20" name="sc_66108_t2" value="14"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="50" name="sc_66108_t3" value="50"></td>
+   <td class="tot font-semibold">86</td><td class="gr"><span class="pill">4</span></td></tr><tr data-text="66201 นาย พงษ์พัฒน์ แสงทอง" data-max="100">
+   <td>66201</td><td>นาย พงษ์พัฒน์ แสงทอง</td><td>2</td>
+   <td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="30" name="sc_66201_t1" value="17"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="20" name="sc_66201_t2" value="12"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="50" name="sc_66201_t3" value="29"></td>
+   <td class="tot font-semibold">58</td><td class="gr"><span class="pill">1.5</span></td></tr><tr data-text="66202 นาย พงษ์พัฒน์ สุขใจ" data-max="100">
+   <td>66202</td><td>นาย พงษ์พัฒน์ สุขใจ</td><td>2</td>
+   <td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="30" name="sc_66202_t1" value="30"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="20" name="sc_66202_t2" value="19"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="50" name="sc_66202_t3" value="41"></td>
+   <td class="tot font-semibold">90</td><td class="gr"><span class="pill">4</span></td></tr><tr data-text="66203 นาย อนุชา ไพเราะ" data-max="100">
+   <td>66203</td><td>นาย อนุชา ไพเราะ</td><td>2</td>
+   <td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="30" name="sc_66203_t1" value="18"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="20" name="sc_66203_t2" value="14"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="50" name="sc_66203_t3" value="26"></td>
+   <td class="tot font-semibold">58</td><td class="gr"><span class="pill">1.5</span></td></tr><tr data-text="66204 นาย เจษฎา มั่นคง" data-max="100">
+   <td>66204</td><td>นาย เจษฎา มั่นคง</td><td>2</td>
+   <td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="30" name="sc_66204_t1" value="23"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="20" name="sc_66204_t2" value="16"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="50" name="sc_66204_t3" value="43"></td>
+   <td class="tot font-semibold">82</td><td class="gr"><span class="pill">4</span></td></tr><tr data-text="66205 นาย ปิติ กล้าหาญ" data-max="100">
+   <td>66205</td><td>นาย ปิติ กล้าหาญ</td><td>2</td>
+   <td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="30" name="sc_66205_t1" value="24"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="20" name="sc_66205_t2" value="17"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="50" name="sc_66205_t3" value="49"></td>
+   <td class="tot font-semibold">90</td><td class="gr"><span class="pill">4</span></td></tr><tr data-text="66206 น.ส. ปาริชาติ กล้าหาญ" data-max="100">
+   <td>66206</td><td>น.ส. ปาริชาติ กล้าหาญ</td><td>2</td>
+   <td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="30" name="sc_66206_t1" value="16"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="20" name="sc_66206_t2" value="7"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="50" name="sc_66206_t3" value="23"></td>
+   <td class="tot font-semibold">46</td><td class="gr"><span class="pill">0</span></td></tr><tr data-text="66207 นาย นนทพัทธ์ เจริญผล" data-max="100">
+   <td>66207</td><td>นาย นนทพัทธ์ เจริญผล</td><td>2</td>
+   <td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="30" name="sc_66207_t1" value="23"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="20" name="sc_66207_t2" value="13"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="50" name="sc_66207_t3" value="45"></td>
+   <td class="tot font-semibold">81</td><td class="gr"><span class="pill">4</span></td></tr><tr data-text="66208 นาย สมชาย มั่นคง" data-max="100">
+   <td>66208</td><td>นาย สมชาย มั่นคง</td><td>2</td>
+   <td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="30" name="sc_66208_t1" value="22"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="20" name="sc_66208_t2" value="17"></td><td><input class="sc inp !w-20 !py-1" type="number" step="any" min="0" max="50" name="sc_66208_t3" value="41"></td>
+   <td class="tot font-semibold">80</td><td class="gr"><span class="pill">4</span></td></tr></tbody></table>
+</form>
+
+</main></div>
+<script>
+// ---------- ส่วนช่วย: ส่งออก Excel / Word / PDF / พิมพ์ (อ่านข้อมูลจากตารางที่เห็นอยู่) ----------
+function tableData(id){
+  const out=[];
+  document.querySelectorAll('#'+id+' tr').forEach(tr=>{
+    if(tr.style.display==='none') return;
+    out.push([...tr.children].filter(c=>!c.classList.contains('no-export')).map(c=>{
+      const i=c.querySelector('input,select'); const t=(i?i.value:c.innerText).trim();
+      return (/^-?[1-9]\d{0,6}(\.\d+)?$/.test(t))?Number(t):t;}));
+  });
+  return out;
+}
+function htmlTable(id){
+  const t=document.getElementById(id), d=tableData(id);
+  let h='<h2 style="font-family:Prompt,sans-serif">'+t.dataset.title+'</h2><p style="font-family:Prompt,sans-serif">'+(t.dataset.sub||'')+'</p>';
+  h+='<table border="1" cellspacing="0" cellpadding="5" style="border-collapse:collapse;font-family:Prompt,sans-serif;font-size:12px">';
+  d.forEach((r,i)=>{h+='<tr>'+r.map(c=>(i==0?'<th style="background:#eef2ff">':'<td>')+c+(i==0?'</th>':'</td>')).join('')+'</tr>'});
+  return h+'</table>';
+}
+function exportExcel(id){const t=document.getElementById(id);const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet([[t.dataset.title],[t.dataset.sub||''],[]].concat(tableData(id))),'คะแนน');
+  XLSX.writeFile(wb,t.dataset.title+'.xlsx');}
+function exportWord(id){const t=document.getElementById(id);
+  const html='<html><head><meta charset="utf-8"></head><body>'+htmlTable(id)+'</body></html>';
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+html],{type:'application/msword'}));
+  a.download=t.dataset.title+'.doc';a.click();}
+function exportPDF(id){const t=document.getElementById(id);
+  html2pdf().set({margin:10,filename:t.dataset.title+'.pdf',html2canvas:{scale:2},
+    jsPDF:{unit:'mm',format:'a4',orientation:tableData(id)[0].length>7?'landscape':'portrait'}}).from(htmlTable(id),'string').save();}
+function exportBar(id){return `<span class="no-print flex flex-wrap gap-2">
+  <button class="btn btn-gray btn-sm" onclick="window.print()">🖨️ พิมพ์</button>
+  <button class="btn btn-gray btn-sm" onclick="exportPDF('${id}')">📄 PDF</button>
+  <button class="btn btn-gray btn-sm" onclick="exportExcel('${id}')">📗 Excel</button>
+  <button class="btn btn-gray btn-sm" onclick="exportWord('${id}')">📘 Word</button></span>`;}
+document.querySelectorAll('[data-exportbar]').forEach(e=>e.innerHTML=exportBar(e.dataset.exportbar));
+// ---------- ส่วนช่วย: เลือกชั้น -> ห้อง ----------
+const LEVELS=[{"name": "\u0e21.1", "rooms": ["1", "2"]}, {"name": "\u0e21.2", "rooms": ["1", "2"]}, {"name": "\u0e21.3", "rooms": ["1", "2"]}, {"name": "\u0e21.4", "rooms": ["1", "2"]}, {"name": "\u0e21.5", "rooms": ["1", "2"]}, {"name": "\u0e21.6", "rooms": ["1", "2"]}];
+function fillRooms(sel,level,keep,all){
+  const rooms=(LEVELS.find(l=>l.name===level)||{rooms:[]}).rooms;
+  sel.innerHTML=(all?'<option value="">ทุกห้อง</option>':'')+rooms.map(r=>`<option ${r===keep?'selected':''}>${r}</option>`).join('');
+}
+</script>
+<script>
+const GRADES=[{"grade": "4", "min": 80}, {"grade": "3.5", "min": 75}, {"grade": "3", "min": 70}, {"grade": "2.5", "min": 65}, {"grade": "2", "min": 60}, {"grade": "1.5", "min": 55}, {"grade": "1", "min": 50}, {"grade": "0", "min": 0}];
+function gradeOf(p){for(const g of GRADES){if(p>=g.min)return g.grade;}return '0';}
+function applyFilter(){const q=document.getElementById('q').value.toLowerCase();
+ document.querySelectorAll('#tbl tbody tr').forEach(tr=>tr.style.display=(!q||tr.dataset.text.toLowerCase().includes(q))?'':'none');}
+// คำนวณคะแนนรวม/เกรดทันทีที่พิมพ์
+document.querySelectorAll('tr[data-max]').forEach(tr=>tr.querySelectorAll('.sc').forEach(i=>i.oninput=()=>{
+ let t=0;tr.querySelectorAll('.sc').forEach(x=>t+=Number(x.value)||0);
+ tr.querySelector('.tot').textContent=t;
+ tr.querySelector('.gr').innerHTML='<span class="pill">'+gradeOf(t/Number(tr.dataset.max)*100)+'</span>';}));
+</script>
+</body></html>

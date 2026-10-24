@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>โรงเรียนดวงดาววิทยา (ตัวอย่าง)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Prompt','sans-serif']}}}}</script>
+<style type="text/tailwindcss">
+@layer components{
+ .btn{@apply inline-flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition cursor-pointer}
+ .btn-gray{@apply bg-white text-slate-700 border border-slate-200 hover:bg-slate-50}
+ .btn-red{@apply bg-rose-500 text-white hover:bg-rose-600}
+ .btn-sm{@apply px-3 py-1 text-xs}
+ .inp{@apply w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300}
+ .card{@apply bg-white rounded-2xl shadow-sm border border-slate-100 p-5}
+ .tb{@apply w-full text-sm}
+ .tb th{@apply bg-indigo-50 text-indigo-800 text-left px-3 py-2 font-semibold whitespace-nowrap}
+ .tb td{@apply px-3 py-2 border-b border-slate-100}
+ .tb tbody tr:hover{@apply bg-slate-50}
+ .pill{@apply inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-700}
+}
+</style>
+<style>
+ @media print{ aside,.no-print{display:none!important} body{background:#fff!important} main{padding:0!important}
+  .card{box-shadow:none!important;border:none!important} .tb th,.tb td{border:1px solid #cbd5e1} .tb th{background:#eef2ff!important;-webkit-print-color-adjust:exact} }
+ dialog::backdrop{background:rgba(15,23,42,.5)}
+</style><script>window.STATIC_PATH="/login";</script><script src="demo_map.js"></script><script src="demo_shim.js"></script></head>
+<body class="bg-slate-100 font-sans text-slate-800"><div style="position:sticky;top:0;z-index:50;background:#f59e0b;color:#fff;text-align:center;padding:6px 10px;font-size:13px">🔎 เว็บตัวอย่างสำหรับดูเท่านั้น — บันทึก/แก้ไขข้อมูลไม่ได้ · ข้อมูลทั้งหมดเป็นข้อมูลสมมติ (ตัวระบบจริงเขียนด้วย Python)</div>
+
+ 
+ 
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-500 -m-4 p-4">
+ <form method="post" class="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-sm">
+  <div class="text-center mb-6"><div class="text-5xl mb-2">🎓</div><h1 class="text-xl font-bold">โรงเรียนดวงดาววิทยา (ตัวอย่าง)</h1><p class="text-sm text-slate-500">เข้าสู่ระบบ</p></div>
+  <input type="hidden" name="role" id="role" value="student">
+  <div class="grid grid-cols-3 gap-2 mb-4" id="tabs">
+   
+   <button type="button" data-r="student" class="py-2 rounded-xl text-sm border border-slate-200">นักเรียน</button>
+   <button type="button" data-r="teacher" class="py-2 rounded-xl text-sm border border-slate-200">ครู</button>
+   <button type="button" data-r="admin" class="py-2 rounded-xl text-sm border border-slate-200">แอดมิน</button>
+  </div>
+  <label id="ulabel" class="text-sm text-slate-600">รหัสนักเรียน</label>
+  <input name="user" id="user" class="inp mb-3" autocomplete="off">
+  <label class="text-sm text-slate-600">รหัสผ่าน</label>
+  <input name="password" type="password" class="inp mb-4">
+  <button class="btn w-full justify-center py-3">เข้าสู่ระบบ</button>
+  <p class="text-xs text-slate-400 mt-4 text-center">ตัวอย่าง: นักเรียน 61101 / 2345 · ครู teacher / 12345 · แอดมิน 1234</p>
+ <div class="mt-4 grid gap-2"><a class="btn justify-center" href="dashboard.html">👀 ดูตัวอย่างในฐานะครู / แอดมิน</a><a class="btn btn-gray justify-center" href="print.html?k=%2Freport_print%3Fsid%3D61101%26type%3Dstudent_report">👀 ดูตัวอย่างในฐานะนักเรียน (ใบแสดงผลการเรียน)</a></div></form>
+</div>
+
+<script>
+// ---------- ส่วนช่วย: ส่งออก Excel / Word / PDF / พิมพ์ (อ่านข้อมูลจากตารางที่เห็นอยู่) ----------
+function tableData(id){
+  const out=[];
+  document.querySelectorAll('#'+id+' tr').forEach(tr=>{
+    if(tr.style.display==='none') return;
+    out.push([...tr.children].filter(c=>!c.classList.contains('no-export')).map(c=>{
+      const i=c.querySelector('input,select'); const t=(i?i.value:c.innerText).trim();
+      return (/^-?[1-9]\d{0,6}(\.\d+)?$/.test(t))?Number(t):t;}));
+  });
+  return out;
+}
+function htmlTable(id){
+  const t=document.getElementById(id), d=tableData(id);
+  let h='<h2 style="font-family:Prompt,sans-serif">'+t.dataset.title+'</h2><p style="font-family:Prompt,sans-serif">'+(t.dataset.sub||'')+'</p>';
+  h+='<table border="1" cellspacing="0" cellpadding="5" style="border-collapse:collapse;font-family:Prompt,sans-serif;font-size:12px">';
+  d.forEach((r,i)=>{h+='<tr>'+r.map(c=>(i==0?'<th style="background:#eef2ff">':'<td>')+c+(i==0?'</th>':'</td>')).join('')+'</tr>'});
+  return h+'</table>';
+}
+function exportExcel(id){const t=document.getElementById(id);const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet([[t.dataset.title],[t.dataset.sub||''],[]].concat(tableData(id))),'คะแนน');
+  XLSX.writeFile(wb,t.dataset.title+'.xlsx');}
+function exportWord(id){const t=document.getElementById(id);
+  const html='<html><head><meta charset="utf-8"></head><body>'+htmlTable(id)+'</body></html>';
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+html],{type:'application/msword'}));
+  a.download=t.dataset.title+'.doc';a.click();}
+function exportPDF(id){const t=document.getElementById(id);
+  html2pdf().set({margin:10,filename:t.dataset.title+'.pdf',html2canvas:{scale:2},
+    jsPDF:{unit:'mm',format:'a4',orientation:tableData(id)[0].length>7?'landscape':'portrait'}}).from(htmlTable(id),'string').save();}
+function exportBar(id){return `<span class="no-print flex flex-wrap gap-2">
+  <button class="btn btn-gray btn-sm" onclick="window.print()">🖨️ พิมพ์</button>
+  <button class="btn btn-gray btn-sm" onclick="exportPDF('${id}')">📄 PDF</button>
+  <button class="btn btn-gray btn-sm" onclick="exportExcel('${id}')">📗 Excel</button>
+  <button class="btn btn-gray btn-sm" onclick="exportWord('${id}')">📘 Word</button></span>`;}
+document.querySelectorAll('[data-exportbar]').forEach(e=>e.innerHTML=exportBar(e.dataset.exportbar));
+// ---------- ส่วนช่วย: เลือกชั้น -> ห้อง ----------
+const LEVELS=[{"name": "\u0e21.1", "rooms": ["1", "2"]}, {"name": "\u0e21.2", "rooms": ["1", "2"]}, {"name": "\u0e21.3", "rooms": ["1", "2"]}, {"name": "\u0e21.4", "rooms": ["1", "2"]}, {"name": "\u0e21.5", "rooms": ["1", "2"]}, {"name": "\u0e21.6", "rooms": ["1", "2"]}];
+function fillRooms(sel,level,keep,all){
+  const rooms=(LEVELS.find(l=>l.name===level)||{rooms:[]}).rooms;
+  sel.innerHTML=(all?'<option value="">ทุกห้อง</option>':'')+rooms.map(r=>`<option ${r===keep?'selected':''}>${r}</option>`).join('');
+}
+</script>
+<script>
+const tabs=document.querySelectorAll('#tabs button');
+function pick(r){document.getElementById('role').value=r;
+ tabs.forEach(b=>b.className='py-2 rounded-xl text-sm border '+(b.dataset.r===r?'bg-indigo-600 text-white border-indigo-600':'border-slate-200'));
+ document.getElementById('ulabel').textContent={student:'รหัสนักเรียน',teacher:'ชื่อผู้ใช้ครู',admin:'(ไม่ต้องกรอก)'}[r];
+ document.getElementById('user').disabled=(r==='admin');}
+tabs.forEach(b=>b.onclick=()=>pick(b.dataset.r)); pick('student');
+</script>
+</body></html>

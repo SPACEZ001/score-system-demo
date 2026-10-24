@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>โรงเรียนดวงดาววิทยา (ตัวอย่าง)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Prompt','sans-serif']}}}}</script>
+<style type="text/tailwindcss">
+@layer components{
+ .btn{@apply inline-flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition cursor-pointer}
+ .btn-gray{@apply bg-white text-slate-700 border border-slate-200 hover:bg-slate-50}
+ .btn-red{@apply bg-rose-500 text-white hover:bg-rose-600}
+ .btn-sm{@apply px-3 py-1 text-xs}
+ .inp{@apply w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300}
+ .card{@apply bg-white rounded-2xl shadow-sm border border-slate-100 p-5}
+ .tb{@apply w-full text-sm}
+ .tb th{@apply bg-indigo-50 text-indigo-800 text-left px-3 py-2 font-semibold whitespace-nowrap}
+ .tb td{@apply px-3 py-2 border-b border-slate-100}
+ .tb tbody tr:hover{@apply bg-slate-50}
+ .pill{@apply inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-700}
+}
+</style>
+<style>
+ @media print{ aside,.no-print{display:none!important} body{background:#fff!important} main{padding:0!important}
+  .card{box-shadow:none!important;border:none!important} .tb th,.tb td{border:1px solid #cbd5e1} .tb th{background:#eef2ff!important;-webkit-print-color-adjust:exact} }
+ dialog::backdrop{background:rgba(15,23,42,.5)}
+</style><script>window.STATIC_PATH="/reports";</script><script src="demo_map.js"></script><script src="demo_shim.js"></script></head>
+<body class="bg-slate-100 font-sans text-slate-800"><div style="position:sticky;top:0;z-index:50;background:#f59e0b;color:#fff;text-align:center;padding:6px 10px;font-size:13px">🔎 เว็บตัวอย่างสำหรับดูเท่านั้น — บันทึก/แก้ไขข้อมูลไม่ได้ · ข้อมูลทั้งหมดเป็นข้อมูลสมมติ (ตัวระบบจริงเขียนด้วย Python)</div>
+
+<div class="md:flex min-h-screen">
+ <aside class="md:w-60 shrink-0 bg-gradient-to-b from-indigo-700 to-violet-800 text-white p-4 md:p-5">
+  <div class="text-lg font-bold mb-1">🎓 โรงเรียนดวงดาววิทยา (ตัวอย่าง)</div>
+  <div class="text-xs text-indigo-200 mb-4">แอดมิน (แอดมิน)</div>
+  <nav class="flex md:block gap-1 overflow-x-auto">
+  
+   <a href="dashboard.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">🏠 ภาพรวม</a>
+  
+   <a href="students.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">👩‍🎓 รายชื่อนักเรียน</a>
+  
+   <a href="scores.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">✏️ กรอกคะแนน</a>
+  
+   <a href="reports.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 bg-white/20 font-semibold">🖨️ รายงาน / พิมพ์เอกสาร</a>
+  
+   <a href="p001.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">📊 ตารางคะแนนรวม</a>
+  
+   <a href="subjects.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">📚 วิชาและงาน</a>
+  
+   <a href="classes.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">🏫 ชั้นและห้อง</a>
+  
+   <a href="settings.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">⚙️ ตัดเกรด</a>
+  
+   <a href="school.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">🏛️ ข้อมูลโรงเรียน</a>
+  
+   <a href="teachers.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">👨‍🏫 จัดการครู</a>
+  
+   <a href="index.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm hover:bg-white/10 md:mt-6">🚪 ออกจากระบบ</a>
+  </nav>
+ </aside>
+ <main class="flex-1 p-4 md:p-8 min-w-0">
+
+ 
+ 
+<h1 class="text-2xl font-bold">รายงาน / พิมพ์เอกสาร</h1>
+<p class="text-sm text-slate-500 mb-4">เลือกเอกสาร → ตั้งค่า → ดูตัวอย่างทางขวา แล้วกด "สร้างเอกสาร" (พิมพ์ / PDF / Excel / Word)</p>
+<form id="rf" action="/report_print" target="_blank" class="grid xl:grid-cols-[21rem_18rem_minmax(0,1fr)] gap-4 items-start">
+ <div class="card"><div class="font-bold mb-2"><span class="pill">1</span> เลือกเอกสาร</div>
+  <div class="text-xs font-semibold text-indigo-700 mt-3 mb-1">ผลการเรียน / คะแนน</div>
+   <label class="block rounded-xl border border-slate-200 p-2 mb-2 cursor-pointer has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50">
+    <input type="radio" name="type" value="subject_summary" checked> <b class="text-sm">สรุปคะแนนรายวิชา</b>
+    <div class="text-xs text-slate-500 ml-5">ทุกงาน คะแนนรวม ร้อยละ เกรด และค่าเฉลี่ยห้อง</div></label><label class="block rounded-xl border border-slate-200 p-2 mb-2 cursor-pointer has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50">
+    <input type="radio" name="type" value="grades" > <b class="text-sm">สรุปผลการเรียนทุกวิชา</b>
+    <div class="text-xs text-slate-500 ml-5">คะแนนและเกรดทุกวิชา พร้อมเกรดเฉลี่ย</div></label><label class="block rounded-xl border border-slate-200 p-2 mb-2 cursor-pointer has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50">
+    <input type="radio" name="type" value="student_report" > <b class="text-sm">ใบแสดงผลการเรียนรายบุคคล</b>
+    <div class="text-xs text-slate-500 ml-5">นักเรียน 1 คนต่อ 1 หน้า ใช้ส่งผู้ปกครอง</div></label><label class="block rounded-xl border border-slate-200 p-2 mb-2 cursor-pointer has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50">
+    <input type="radio" name="type" value="grade_dist" > <b class="text-sm">สรุปจำนวนนักเรียนแต่ละเกรด</b>
+    <div class="text-xs text-slate-500 ml-5">นับจำนวนคนที่ได้แต่ละเกรดในทุกวิชา</div></label><label class="block rounded-xl border border-slate-200 p-2 mb-2 cursor-pointer has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50">
+    <input type="radio" name="type" value="ranking" > <b class="text-sm">ลำดับเกรดเฉลี่ย</b>
+    <div class="text-xs text-slate-500 ml-5">เรียงจากคะแนนเฉลี่ยสูงไปต่ำ</div></label><div class="text-xs font-semibold text-indigo-700 mt-3 mb-1">รายชื่อ / แบบฟอร์ม</div>
+   <label class="block rounded-xl border border-slate-200 p-2 mb-2 cursor-pointer has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50">
+    <input type="radio" name="type" value="students" > <b class="text-sm">รายชื่อนักเรียน</b>
+    <div class="text-xs text-slate-500 ml-5">เลขที่ รหัส ชื่อ ชั้น/ห้อง วันเกิด</div></label><label class="block rounded-xl border border-slate-200 p-2 mb-2 cursor-pointer has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50">
+    <input type="radio" name="type" value="score_sheet" > <b class="text-sm">แบบบันทึกคะแนนเปล่า</b>
+    <div class="text-xs text-slate-500 ml-5">ตารางว่างไว้เขียนคะแนนด้วยมือ</div></label></div>
+
+ <div class="card space-y-3"><div class="font-bold"><span class="pill">2</span> ตัวเลือก</div>
+  <label class="ro block text-sm" data-o="level">ชั้น<select name="level" class="inp mt-1" id="selLevel"><option value="">อัตโนมัติ / ทุกชั้น</option><option>ม.1</option><option>ม.2</option><option>ม.3</option><option>ม.4</option><option>ม.5</option><option>ม.6</option></select></label>
+  <label class="ro block text-sm" data-o="room">ห้อง<select name="room" class="inp mt-1"><option value="">ทุกห้อง</option></select></label>
+  <label class="ro block text-sm" data-o="subject">วิชา<select name="subject" class="inp mt-1"></select></label>
+  <label class="ro block text-sm" data-o="sid">เฉพาะนักเรียน<select name="sid" class="inp mt-1"></select></label>
+  <label class="ro block text-sm" data-o="cols">จำนวนช่องคะแนน<input name="cols" type="number" min="3" max="20" value="10" class="inp mt-1 !w-28"></label>
+  <div class="text-sm">แนวกระดาษ
+   <div class="grid grid-cols-2 gap-2 mt-1">
+    <label class="rounded-xl border border-slate-200 p-2 text-center cursor-pointer has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50"><input type="radio" name="orient" value="portrait" checked class="hidden">📄 แนวตั้ง</label>
+    <label class="rounded-xl border border-slate-200 p-2 text-center cursor-pointer has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50"><input type="radio" name="orient" value="landscape" class="hidden">🖼️ แนวนอน</label></div></div>
+  <label class="block text-sm">ช่องลงนามท้ายเอกสาร<select name="sign" class="inp mt-1"><option value="1">มี</option><option value="0">ไม่มี</option></select></label>
+  <p class="text-xs text-slate-400">แก้ชื่อโรงเรียนและผู้ลงนามได้ที่เมนู "ข้อมูลโรงเรียน"</p></div>
+
+ <div class="card"><div class="flex flex-wrap justify-between items-center gap-2 mb-3"><div class="font-bold"><span class="pill">3</span> ตัวอย่างเอกสาร</div>
+  <button class="btn">🖨️ สร้างเอกสาร (พิมพ์ / PDF / Excel / Word)</button></div>
+  <iframe id="pv" class="w-full h-[75vh] bg-slate-200 rounded-xl"></iframe></div>
+</form>
+</main></div>
+<script>
+// ---------- ส่วนช่วย: ส่งออก Excel / Word / PDF / พิมพ์ (อ่านข้อมูลจากตารางที่เห็นอยู่) ----------
+function tableData(id){
+  const out=[];
+  document.querySelectorAll('#'+id+' tr').forEach(tr=>{
+    if(tr.style.display==='none') return;
+    out.push([...tr.children].filter(c=>!c.classList.contains('no-export')).map(c=>{
+      const i=c.querySelector('input,select'); const t=(i?i.value:c.innerText).trim();
+      return (/^-?[1-9]\d{0,6}(\.\d+)?$/.test(t))?Number(t):t;}));
+  });
+  return out;
+}
+function htmlTable(id){
+  const t=document.getElementById(id), d=tableData(id);
+  let h='<h2 style="font-family:Prompt,sans-serif">'+t.dataset.title+'</h2><p style="font-family:Prompt,sans-serif">'+(t.dataset.sub||'')+'</p>';
+  h+='<table border="1" cellspacing="0" cellpadding="5" style="border-collapse:collapse;font-family:Prompt,sans-serif;font-size:12px">';
+  d.forEach((r,i)=>{h+='<tr>'+r.map(c=>(i==0?'<th style="background:#eef2ff">':'<td>')+c+(i==0?'</th>':'</td>')).join('')+'</tr>'});
+  return h+'</table>';
+}
+function exportExcel(id){const t=document.getElementById(id);const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet([[t.dataset.title],[t.dataset.sub||''],[]].concat(tableData(id))),'คะแนน');
+  XLSX.writeFile(wb,t.dataset.title+'.xlsx');}
+function exportWord(id){const t=document.getElementById(id);
+  const html='<html><head><meta charset="utf-8"></head><body>'+htmlTable(id)+'</body></html>';
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+html],{type:'application/msword'}));
+  a.download=t.dataset.title+'.doc';a.click();}
+function exportPDF(id){const t=document.getElementById(id);
+  html2pdf().set({margin:10,filename:t.dataset.title+'.pdf',html2canvas:{scale:2},
+    jsPDF:{unit:'mm',format:'a4',orientation:tableData(id)[0].length>7?'landscape':'portrait'}}).from(htmlTable(id),'string').save();}
+function exportBar(id){return `<span class="no-print flex flex-wrap gap-2">
+  <button class="btn btn-gray btn-sm" onclick="window.print()">🖨️ พิมพ์</button>
+  <button class="btn btn-gray btn-sm" onclick="exportPDF('${id}')">📄 PDF</button>
+  <button class="btn btn-gray btn-sm" onclick="exportExcel('${id}')">📗 Excel</button>
+  <button class="btn btn-gray btn-sm" onclick="exportWord('${id}')">📘 Word</button></span>`;}
+document.querySelectorAll('[data-exportbar]').forEach(e=>e.innerHTML=exportBar(e.dataset.exportbar));
+// ---------- ส่วนช่วย: เลือกชั้น -> ห้อง ----------
+const LEVELS=[{"name": "\u0e21.1", "rooms": ["1", "2"]}, {"name": "\u0e21.2", "rooms": ["1", "2"]}, {"name": "\u0e21.3", "rooms": ["1", "2"]}, {"name": "\u0e21.4", "rooms": ["1", "2"]}, {"name": "\u0e21.5", "rooms": ["1", "2"]}, {"name": "\u0e21.6", "rooms": ["1", "2"]}];
+function fillRooms(sel,level,keep,all){
+  const rooms=(LEVELS.find(l=>l.name===level)||{rooms:[]}).rooms;
+  sel.innerHTML=(all?'<option value="">ทุกห้อง</option>':'')+rooms.map(r=>`<option ${r===keep?'selected':''}>${r}</option>`).join('');
+}
+</script>
+<script>
+const OPTS={"grade_dist": ["level", "room"], "grades": ["level", "room"], "ranking": ["level", "room"], "score_sheet": ["level", "room", "cols"], "student_report": ["level", "room", "sid"], "students": ["level", "room"], "subject_summary": ["level", "room", "subject"]}, SUBJ=[{"id": "s1", "label": "\u0e17211101 \u0e20\u0e32\u0e29\u0e32\u0e44\u0e17\u0e22 (\u0e21.1)", "level": "\u0e21.1"}, {"id": "s2", "label": "\u0e04211101 \u0e04\u0e13\u0e34\u0e15\u0e28\u0e32\u0e2a\u0e15\u0e23\u0e4c (\u0e21.1)", "level": "\u0e21.1"}, {"id": "s3", "label": "\u0e27211101 \u0e27\u0e34\u0e17\u0e22\u0e32\u0e28\u0e32\u0e2a\u0e15\u0e23\u0e4c (\u0e21.1)", "level": "\u0e21.1"}, {"id": "s5", "label": "\u0e17221101 \u0e20\u0e32\u0e29\u0e32\u0e44\u0e17\u0e22 (\u0e21.2)", "level": "\u0e21.2"}, {"id": "s6", "label": "\u0e04221101 \u0e04\u0e13\u0e34\u0e15\u0e28\u0e32\u0e2a\u0e15\u0e23\u0e4c (\u0e21.2)", "level": "\u0e21.2"}, {"id": "s7", "label": "\u0e27221101 \u0e27\u0e34\u0e17\u0e22\u0e32\u0e28\u0e32\u0e2a\u0e15\u0e23\u0e4c (\u0e21.2)", "level": "\u0e21.2"}, {"id": "s9", "label": "\u0e17231101 \u0e20\u0e32\u0e29\u0e32\u0e44\u0e17\u0e22 (\u0e21.3)", "level": "\u0e21.3"}, {"id": "s10", "label": "\u0e04231101 \u0e04\u0e13\u0e34\u0e15\u0e28\u0e32\u0e2a\u0e15\u0e23\u0e4c (\u0e21.3)", "level": "\u0e21.3"}, {"id": "s11", "label": "\u0e27231101 \u0e27\u0e34\u0e17\u0e22\u0e32\u0e28\u0e32\u0e2a\u0e15\u0e23\u0e4c (\u0e21.3)", "level": "\u0e21.3"}, {"id": "s13", "label": "\u0e17241101 \u0e20\u0e32\u0e29\u0e32\u0e44\u0e17\u0e22 (\u0e21.4)", "level": "\u0e21.4"}, {"id": "s14", "label": "\u0e04241101 \u0e04\u0e13\u0e34\u0e15\u0e28\u0e32\u0e2a\u0e15\u0e23\u0e4c (\u0e21.4)", "level": "\u0e21.4"}, {"id": "s15", "label": "\u0e27241101 \u0e27\u0e34\u0e17\u0e22\u0e32\u0e28\u0e32\u0e2a\u0e15\u0e23\u0e4c (\u0e21.4)", "level": "\u0e21.4"}, {"id": "s17", "label": "\u0e17251101 \u0e20\u0e32\u0e29\u0e32\u0e44\u0e17\u0e22 (\u0e21.5)", "level": "\u0e21.5"}, {"id": "s18", "label": "\u0e04251101 \u0e04\u0e13\u0e34\u0e15\u0e28\u0e32\u0e2a\u0e15\u0e23\u0e4c (\u0e21.5)", "level": "\u0e21.5"}, {"id": "s19", "label": "\u0e27251101 \u0e27\u0e34\u0e17\u0e22\u0e32\u0e28\u0e32\u0e2a\u0e15\u0e23\u0e4c (\u0e21.5)", "level": "\u0e21.5"}, {"id": "s21", "label": "\u0e17261101 \u0e20\u0e32\u0e29\u0e32\u0e44\u0e17\u0e22 (\u0e21.6)", "level": "\u0e21.6"}, {"id": "s22", "label": "\u0e04261101 \u0e04\u0e13\u0e34\u0e15\u0e28\u0e32\u0e2a\u0e15\u0e23\u0e4c (\u0e21.6)", "level": "\u0e21.6"}, {"id": "s23", "label": "\u0e27261101 \u0e27\u0e34\u0e17\u0e22\u0e32\u0e28\u0e32\u0e2a\u0e15\u0e23\u0e4c (\u0e21.6)", "level": "\u0e21.6"}], STU=[{"id": "61101", "level": "\u0e21.1", "name": "\u0e14.\u0e0a. \u0e20\u0e39\u0e23\u0e34 \u0e21\u0e31\u0e48\u0e19\u0e04\u0e07", "room": "1"}, {"id": "61102", "level": "\u0e21.1", "name": "\u0e14.\u0e0d. \u0e2a\u0e21\u0e2b\u0e0d\u0e34\u0e07 \u0e1a\u0e38\u0e0d\u0e21\u0e32", "room": "1"}, {"id": "61103", "level": "\u0e21.1", "name": "\u0e14.\u0e0d. \u0e28\u0e34\u0e23\u0e34\u0e1e\u0e23 \u0e23\u0e31\u0e01\u0e40\u0e23\u0e35\u0e22\u0e19", "room": "1"}, {"id": "61104", "level": "\u0e21.1", "name": "\u0e14.\u0e0a. \u0e23\u0e31\u0e0a\u0e0a\u0e32\u0e19\u0e19\u0e17\u0e4c \u0e43\u0e08\u0e07\u0e32\u0e21", "room": "1"}, {"id": "61105", "level": "\u0e21.1", "name": "\u0e14.\u0e0a. \u0e18\u0e19\u0e01\u0e23 \u0e01\u0e25\u0e49\u0e32\u0e2b\u0e32\u0e0d", "room": "1"}, {"id": "61106", "level": "\u0e21.1", "name": "\u0e14.\u0e0a. \u0e13\u0e31\u0e10\u0e27\u0e38\u0e12\u0e34 \u0e1e\u0e22\u0e32\u0e22\u0e32\u0e21", "room": "1"}, {"id": "61107", "level": "\u0e21.1", "name": "\u0e14.\u0e0a. \u0e20\u0e39\u0e23\u0e34 \u0e1e\u0e22\u0e32\u0e22\u0e32\u0e21", "room": "1"}, {"id": "61108", "level": "\u0e21.1", "name": "\u0e14.\u0e0a. \u0e19\u0e19\u0e17\u0e1e\u0e31\u0e17\u0e18\u0e4c \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "1"}, {"id": "61201", "level": "\u0e21.1", "name": "\u0e14.\u0e0a. \u0e01\u0e34\u0e15\u0e15\u0e34 \u0e1a\u0e38\u0e0d\u0e21\u0e32", "room": "2"}, {"id": "61202", "level": "\u0e21.1", "name": "\u0e14.\u0e0a. \u0e2a\u0e21\u0e0a\u0e32\u0e22 \u0e2a\u0e38\u0e02\u0e43\u0e08", "room": "2"}, {"id": "61203", "level": "\u0e21.1", "name": "\u0e14.\u0e0d. \u0e01\u0e21\u0e25\u0e0a\u0e19\u0e01 \u0e28\u0e23\u0e35\u0e2a\u0e38\u0e02", "room": "2"}, {"id": "61204", "level": "\u0e21.1", "name": "\u0e14.\u0e0d. \u0e01\u0e21\u0e25\u0e0a\u0e19\u0e01 \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "2"}, {"id": "61205", "level": "\u0e21.1", "name": "\u0e14.\u0e0a. \u0e19\u0e19\u0e17\u0e1e\u0e31\u0e17\u0e18\u0e4c \u0e43\u0e08\u0e07\u0e32\u0e21", "room": "2"}, {"id": "61206", "level": "\u0e21.1", "name": "\u0e14.\u0e0a. \u0e23\u0e31\u0e0a\u0e0a\u0e32\u0e19\u0e19\u0e17\u0e4c \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "2"}, {"id": "61207", "level": "\u0e21.1", "name": "\u0e14.\u0e0d. \u0e1e\u0e34\u0e21\u0e1e\u0e4c\u0e0a\u0e19\u0e01 \u0e23\u0e31\u0e01\u0e40\u0e23\u0e35\u0e22\u0e19", "room": "2"}, {"id": "61208", "level": "\u0e21.1", "name": "\u0e14.\u0e0d. \u0e27\u0e23\u0e31\u0e0d\u0e0d\u0e32 \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "2"}, {"id": "62101", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e01\u0e34\u0e15\u0e15\u0e34 \u0e01\u0e25\u0e49\u0e32\u0e2b\u0e32\u0e0d", "room": "1"}, {"id": "62102", "level": "\u0e21.2", "name": "\u0e14.\u0e0d. \u0e13\u0e31\u0e10\u0e18\u0e34\u0e14\u0e32 \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "1"}, {"id": "62103", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e13\u0e31\u0e10\u0e27\u0e38\u0e12\u0e34 \u0e1e\u0e22\u0e32\u0e22\u0e32\u0e21", "room": "1"}, {"id": "62104", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e1b\u0e34\u0e15\u0e34 \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "1"}, {"id": "62105", "level": "\u0e21.2", "name": "\u0e14.\u0e0d. \u0e2a\u0e38\u0e20\u0e32\u0e1e\u0e23 \u0e01\u0e25\u0e49\u0e32\u0e2b\u0e32\u0e0d", "room": "1"}, {"id": "62106", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e18\u0e19\u0e01\u0e23 \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "1"}, {"id": "62107", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e1b\u0e34\u0e15\u0e34 \u0e28\u0e23\u0e35\u0e2a\u0e38\u0e02", "room": "1"}, {"id": "62108", "level": "\u0e21.2", "name": "\u0e14.\u0e0d. \u0e1b\u0e32\u0e23\u0e34\u0e0a\u0e32\u0e15\u0e34 \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "1"}, {"id": "62201", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e19\u0e19\u0e17\u0e1e\u0e31\u0e17\u0e18\u0e4c \u0e21\u0e31\u0e48\u0e19\u0e04\u0e07", "room": "2"}, {"id": "62202", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e2a\u0e21\u0e0a\u0e32\u0e22 \u0e44\u0e1e\u0e40\u0e23\u0e32\u0e30", "room": "2"}, {"id": "62203", "level": "\u0e21.2", "name": "\u0e14.\u0e0d. \u0e21\u0e32\u0e19\u0e35 \u0e28\u0e23\u0e35\u0e2a\u0e38\u0e02", "room": "2"}, {"id": "62204", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e1b\u0e34\u0e15\u0e34 \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "2"}, {"id": "62205", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e2a\u0e21\u0e0a\u0e32\u0e22 \u0e28\u0e23\u0e35\u0e2a\u0e38\u0e02", "room": "2"}, {"id": "62206", "level": "\u0e21.2", "name": "\u0e14.\u0e0d. \u0e1e\u0e34\u0e21\u0e1e\u0e4c\u0e0a\u0e19\u0e01 \u0e27\u0e07\u0e28\u0e4c\u0e14\u0e35", "room": "2"}, {"id": "62207", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e2d\u0e19\u0e38\u0e0a\u0e32 \u0e23\u0e31\u0e01\u0e40\u0e23\u0e35\u0e22\u0e19", "room": "2"}, {"id": "62208", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e18\u0e19\u0e01\u0e23 \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "2"}, {"id": "63101", "level": "\u0e21.3", "name": "\u0e14.\u0e0a. \u0e2d\u0e19\u0e38\u0e0a\u0e32 \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "1"}, {"id": "63102", "level": "\u0e21.3", "name": "\u0e14.\u0e0a. \u0e40\u0e08\u0e29\u0e0e\u0e32 \u0e01\u0e25\u0e49\u0e32\u0e2b\u0e32\u0e0d", "room": "1"}, {"id": "63103", "level": "\u0e21.3", "name": "\u0e14.\u0e0d. \u0e1e\u0e34\u0e21\u0e1e\u0e4c\u0e0a\u0e19\u0e01 \u0e44\u0e1e\u0e40\u0e23\u0e32\u0e30", "room": "1"}, {"id": "63104", "level": "\u0e21.3", "name": "\u0e14.\u0e0a. \u0e1b\u0e34\u0e15\u0e34 \u0e1e\u0e22\u0e32\u0e22\u0e32\u0e21", "room": "1"}, {"id": "63105", "level": "\u0e21.3", "name": "\u0e14.\u0e0d. \u0e2d\u0e23\u0e38\u0e13\u0e35 \u0e44\u0e1e\u0e40\u0e23\u0e32\u0e30", "room": "1"}, {"id": "63106", "level": "\u0e21.3", "name": "\u0e14.\u0e0d. \u0e1b\u0e32\u0e23\u0e34\u0e0a\u0e32\u0e15\u0e34 \u0e01\u0e25\u0e49\u0e32\u0e2b\u0e32\u0e0d", "room": "1"}, {"id": "63107", "level": "\u0e21.3", "name": "\u0e14.\u0e0a. \u0e1e\u0e07\u0e29\u0e4c\u0e1e\u0e31\u0e12\u0e19\u0e4c \u0e27\u0e07\u0e28\u0e4c\u0e14\u0e35", "room": "1"}, {"id": "63108", "level": "\u0e21.3", "name": "\u0e14.\u0e0d. \u0e18\u0e31\u0e0d\u0e0d\u0e32\u0e23\u0e31\u0e15\u0e19\u0e4c \u0e27\u0e07\u0e28\u0e4c\u0e14\u0e35", "room": "1"}, {"id": "63201", "level": "\u0e21.3", "name": "\u0e14.\u0e0a. \u0e13\u0e31\u0e10\u0e27\u0e38\u0e12\u0e34 \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "2"}, {"id": "63202", "level": "\u0e21.3", "name": "\u0e14.\u0e0d. \u0e13\u0e31\u0e10\u0e18\u0e34\u0e14\u0e32 \u0e23\u0e31\u0e01\u0e40\u0e23\u0e35\u0e22\u0e19", "room": "2"}, {"id": "63203", "level": "\u0e21.3", "name": "\u0e14.\u0e0d. \u0e27\u0e23\u0e31\u0e0d\u0e0d\u0e32 \u0e43\u0e08\u0e07\u0e32\u0e21", "room": "2"}, {"id": "63204", "level": "\u0e21.3", "name": "\u0e14.\u0e0d. \u0e21\u0e32\u0e19\u0e35 \u0e21\u0e31\u0e48\u0e19\u0e04\u0e07", "room": "2"}, {"id": "63205", "level": "\u0e21.3", "name": "\u0e14.\u0e0d. \u0e2a\u0e21\u0e2b\u0e0d\u0e34\u0e07 \u0e01\u0e25\u0e49\u0e32\u0e2b\u0e32\u0e0d", "room": "2"}, {"id": "63206", "level": "\u0e21.3", "name": "\u0e14.\u0e0d. \u0e1b\u0e32\u0e23\u0e34\u0e0a\u0e32\u0e15\u0e34 \u0e43\u0e08\u0e07\u0e32\u0e21", "room": "2"}, {"id": "63207", "level": "\u0e21.3", "name": "\u0e14.\u0e0a. \u0e40\u0e08\u0e29\u0e0e\u0e32 \u0e43\u0e08\u0e07\u0e32\u0e21", "room": "2"}, {"id": "63208", "level": "\u0e21.3", "name": "\u0e14.\u0e0d. \u0e0a\u0e39\u0e43\u0e08 \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "2"}, {"id": "64101", "level": "\u0e21.4", "name": "\u0e19.\u0e2a. \u0e2d\u0e23\u0e38\u0e13\u0e35 \u0e44\u0e1e\u0e40\u0e23\u0e32\u0e30", "room": "1"}, {"id": "64102", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e1e\u0e07\u0e29\u0e4c\u0e1e\u0e31\u0e12\u0e19\u0e4c \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "1"}, {"id": "64103", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e13\u0e31\u0e10\u0e27\u0e38\u0e12\u0e34 \u0e2a\u0e38\u0e02\u0e43\u0e08", "room": "1"}, {"id": "64104", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e01\u0e34\u0e15\u0e15\u0e34 \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "1"}, {"id": "64105", "level": "\u0e21.4", "name": "\u0e19.\u0e2a. \u0e18\u0e31\u0e0d\u0e0d\u0e32\u0e23\u0e31\u0e15\u0e19\u0e4c \u0e1a\u0e38\u0e0d\u0e21\u0e32", "room": "1"}, {"id": "64106", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e2d\u0e19\u0e38\u0e0a\u0e32 \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "1"}, {"id": "64107", "level": "\u0e21.4", "name": "\u0e19.\u0e2a. \u0e1b\u0e32\u0e23\u0e34\u0e0a\u0e32\u0e15\u0e34 \u0e21\u0e31\u0e48\u0e19\u0e04\u0e07", "room": "1"}, {"id": "64108", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e2a\u0e21\u0e0a\u0e32\u0e22 \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "1"}, {"id": "64201", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e2a\u0e21\u0e0a\u0e32\u0e22 \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "2"}, {"id": "64202", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e1b\u0e34\u0e15\u0e34 \u0e1e\u0e22\u0e32\u0e22\u0e32\u0e21", "room": "2"}, {"id": "64203", "level": "\u0e21.4", "name": "\u0e19.\u0e2a. \u0e13\u0e31\u0e10\u0e18\u0e34\u0e14\u0e32 \u0e1a\u0e38\u0e0d\u0e21\u0e32", "room": "2"}, {"id": "64204", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e27\u0e35\u0e23\u0e30 \u0e21\u0e31\u0e48\u0e19\u0e04\u0e07", "room": "2"}, {"id": "64205", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e18\u0e19\u0e01\u0e23 \u0e1a\u0e38\u0e0d\u0e21\u0e32", "room": "2"}, {"id": "64206", "level": "\u0e21.4", "name": "\u0e19.\u0e2a. \u0e13\u0e31\u0e10\u0e18\u0e34\u0e14\u0e32 \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "2"}, {"id": "64207", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e1b\u0e34\u0e15\u0e34 \u0e23\u0e31\u0e01\u0e40\u0e23\u0e35\u0e22\u0e19", "room": "2"}, {"id": "64208", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e18\u0e19\u0e01\u0e23 \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "2"}, {"id": "65101", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e1b\u0e32\u0e23\u0e34\u0e0a\u0e32\u0e15\u0e34 \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "1"}, {"id": "65102", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e21\u0e32\u0e19\u0e35 \u0e1e\u0e22\u0e32\u0e22\u0e32\u0e21", "room": "1"}, {"id": "65103", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e28\u0e34\u0e23\u0e34\u0e1e\u0e23 \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "1"}, {"id": "65104", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e27\u0e23\u0e31\u0e0d\u0e0d\u0e32 \u0e28\u0e23\u0e35\u0e2a\u0e38\u0e02", "room": "1"}, {"id": "65105", "level": "\u0e21.5", "name": "\u0e19\u0e32\u0e22 \u0e01\u0e34\u0e15\u0e15\u0e34 \u0e43\u0e08\u0e07\u0e32\u0e21", "room": "1"}, {"id": "65106", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e1e\u0e34\u0e21\u0e1e\u0e4c\u0e0a\u0e19\u0e01 \u0e43\u0e08\u0e07\u0e32\u0e21", "room": "1"}, {"id": "65107", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e27\u0e23\u0e31\u0e0d\u0e0d\u0e32 \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "1"}, {"id": "65108", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e21\u0e32\u0e19\u0e35 \u0e44\u0e1e\u0e40\u0e23\u0e32\u0e30", "room": "1"}, {"id": "65201", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e18\u0e31\u0e0d\u0e0d\u0e32\u0e23\u0e31\u0e15\u0e19\u0e4c \u0e21\u0e31\u0e48\u0e19\u0e04\u0e07", "room": "2"}, {"id": "65202", "level": "\u0e21.5", "name": "\u0e19\u0e32\u0e22 \u0e1e\u0e07\u0e29\u0e4c\u0e1e\u0e31\u0e12\u0e19\u0e4c \u0e01\u0e25\u0e49\u0e32\u0e2b\u0e32\u0e0d", "room": "2"}, {"id": "65203", "level": "\u0e21.5", "name": "\u0e19\u0e32\u0e22 \u0e40\u0e08\u0e29\u0e0e\u0e32 \u0e23\u0e31\u0e01\u0e40\u0e23\u0e35\u0e22\u0e19", "room": "2"}, {"id": "65204", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e28\u0e34\u0e23\u0e34\u0e1e\u0e23 \u0e44\u0e1e\u0e40\u0e23\u0e32\u0e30", "room": "2"}, {"id": "65205", "level": "\u0e21.5", "name": "\u0e19\u0e32\u0e22 \u0e18\u0e19\u0e01\u0e23 \u0e21\u0e31\u0e48\u0e19\u0e04\u0e07", "room": "2"}, {"id": "65206", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e18\u0e31\u0e0d\u0e0d\u0e32\u0e23\u0e31\u0e15\u0e19\u0e4c \u0e1a\u0e38\u0e0d\u0e21\u0e32", "room": "2"}, {"id": "65207", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e13\u0e31\u0e10\u0e18\u0e34\u0e14\u0e32 \u0e01\u0e25\u0e49\u0e32\u0e2b\u0e32\u0e0d", "room": "2"}, {"id": "65208", "level": "\u0e21.5", "name": "\u0e19\u0e32\u0e22 \u0e1e\u0e07\u0e29\u0e4c\u0e1e\u0e31\u0e12\u0e19\u0e4c \u0e1e\u0e22\u0e32\u0e22\u0e32\u0e21", "room": "2"}, {"id": "66101", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e2a\u0e21\u0e0a\u0e32\u0e22 \u0e1e\u0e22\u0e32\u0e22\u0e32\u0e21", "room": "1"}, {"id": "66102", "level": "\u0e21.6", "name": "\u0e19.\u0e2a. \u0e2a\u0e38\u0e20\u0e32\u0e1e\u0e23 \u0e43\u0e08\u0e07\u0e32\u0e21", "room": "1"}, {"id": "66103", "level": "\u0e21.6", "name": "\u0e19.\u0e2a. \u0e21\u0e32\u0e19\u0e35 \u0e28\u0e23\u0e35\u0e2a\u0e38\u0e02", "room": "1"}, {"id": "66104", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e2a\u0e21\u0e0a\u0e32\u0e22 \u0e28\u0e23\u0e35\u0e2a\u0e38\u0e02", "room": "1"}, {"id": "66105", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e18\u0e19\u0e01\u0e23 \u0e21\u0e31\u0e48\u0e19\u0e04\u0e07", "room": "1"}, {"id": "66106", "level": "\u0e21.6", "name": "\u0e19.\u0e2a. \u0e2a\u0e38\u0e20\u0e32\u0e1e\u0e23 \u0e2a\u0e38\u0e02\u0e43\u0e08", "room": "1"}, {"id": "66107", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e1e\u0e07\u0e29\u0e4c\u0e1e\u0e31\u0e12\u0e19\u0e4c \u0e28\u0e23\u0e35\u0e2a\u0e38\u0e02", "room": "1"}, {"id": "66108", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e23\u0e31\u0e0a\u0e0a\u0e32\u0e19\u0e19\u0e17\u0e4c \u0e44\u0e1e\u0e40\u0e23\u0e32\u0e30", "room": "1"}, {"id": "66201", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e1e\u0e07\u0e29\u0e4c\u0e1e\u0e31\u0e12\u0e19\u0e4c \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "2"}, {"id": "66202", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e1e\u0e07\u0e29\u0e4c\u0e1e\u0e31\u0e12\u0e19\u0e4c \u0e2a\u0e38\u0e02\u0e43\u0e08", "room": "2"}, {"id": "66203", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e2d\u0e19\u0e38\u0e0a\u0e32 \u0e44\u0e1e\u0e40\u0e23\u0e32\u0e30", "room": "2"}, {"id": "66204", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e40\u0e08\u0e29\u0e0e\u0e32 \u0e21\u0e31\u0e48\u0e19\u0e04\u0e07", "room": "2"}, {"id": "66205", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e1b\u0e34\u0e15\u0e34 \u0e01\u0e25\u0e49\u0e32\u0e2b\u0e32\u0e0d", "room": "2"}, {"id": "66206", "level": "\u0e21.6", "name": "\u0e19.\u0e2a. \u0e1b\u0e32\u0e23\u0e34\u0e0a\u0e32\u0e15\u0e34 \u0e01\u0e25\u0e49\u0e32\u0e2b\u0e32\u0e0d", "room": "2"}, {"id": "66207", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e19\u0e19\u0e17\u0e1e\u0e31\u0e17\u0e18\u0e4c \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "2"}, {"id": "66208", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e2a\u0e21\u0e0a\u0e32\u0e22 \u0e21\u0e31\u0e48\u0e19\u0e04\u0e07", "room": "2"}];
+const f=document.getElementById('rf'); let timer;
+function preview(){clearTimeout(timer);timer=setTimeout(()=>{document.getElementById('pv').src=(window.U||(x=>x))('/report_print?'+new URLSearchParams(new FormData(f))+'&preview=1');},250);}
+function sync(){
+ const type=f.elements['type'].value, lv=f.level.value, rm=f.room.value, ks=f.subject.value, kid=f.sid.value;
+ document.querySelectorAll('.ro').forEach(d=>d.style.display=(OPTS[type]||[]).includes(d.dataset.o)?'':'none');
+ f.subject.innerHTML='<option value="">— อัตโนมัติ (วิชาแรก) —</option>'+SUBJ.filter(s=>!lv||!s.level||s.level===lv).map(s=>`<option value="${s.id}">${s.label}</option>`).join('');
+ f.subject.value=ks;
+ f.sid.innerHTML='<option value="">ทุกคน (คนละหน้า)</option>'+STU.filter(s=>(!lv||s.level===lv)&&(!rm||s.room===rm)).map(s=>`<option value="${s.id}">${s.id} ${s.name}</option>`).join('');
+ f.sid.value=kid; preview();}
+f.addEventListener('change',e=>{ if(e.target===f.level){fillRooms(f.room,f.level.value,'',true);} sync();});
+f.cols.addEventListener('input',preview);
+sync();
+</script>
+</body></html>

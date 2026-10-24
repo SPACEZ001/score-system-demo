@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>โรงเรียนดวงดาววิทยา (ตัวอย่าง)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Prompt','sans-serif']}}}}</script>
+<style type="text/tailwindcss">
+@layer components{
+ .btn{@apply inline-flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition cursor-pointer}
+ .btn-gray{@apply bg-white text-slate-700 border border-slate-200 hover:bg-slate-50}
+ .btn-red{@apply bg-rose-500 text-white hover:bg-rose-600}
+ .btn-sm{@apply px-3 py-1 text-xs}
+ .inp{@apply w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300}
+ .card{@apply bg-white rounded-2xl shadow-sm border border-slate-100 p-5}
+ .tb{@apply w-full text-sm}
+ .tb th{@apply bg-indigo-50 text-indigo-800 text-left px-3 py-2 font-semibold whitespace-nowrap}
+ .tb td{@apply px-3 py-2 border-b border-slate-100}
+ .tb tbody tr:hover{@apply bg-slate-50}
+ .pill{@apply inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-700}
+}
+</style>
+<style>
+ @media print{ aside,.no-print{display:none!important} body{background:#fff!important} main{padding:0!important}
+  .card{box-shadow:none!important;border:none!important} .tb th,.tb td{border:1px solid #cbd5e1} .tb th{background:#eef2ff!important;-webkit-print-color-adjust:exact} }
+ dialog::backdrop{background:rgba(15,23,42,.5)}
+</style><script>window.STATIC_PATH="/report";</script><script src="demo_map.js"></script><script src="demo_shim.js"></script></head>
+<body class="bg-slate-100 font-sans text-slate-800"><div style="position:sticky;top:0;z-index:50;background:#f59e0b;color:#fff;text-align:center;padding:6px 10px;font-size:13px">🔎 เว็บตัวอย่างสำหรับดูเท่านั้น — บันทึก/แก้ไขข้อมูลไม่ได้ · ข้อมูลทั้งหมดเป็นข้อมูลสมมติ (ตัวระบบจริงเขียนด้วย Python)</div>
+
+<div class="md:flex min-h-screen">
+ <aside class="md:w-60 shrink-0 bg-gradient-to-b from-indigo-700 to-violet-800 text-white p-4 md:p-5">
+  <div class="text-lg font-bold mb-1">🎓 โรงเรียนดวงดาววิทยา (ตัวอย่าง)</div>
+  <div class="text-xs text-indigo-200 mb-4">แอดมิน (แอดมิน)</div>
+  <nav class="flex md:block gap-1 overflow-x-auto">
+  
+   <a href="dashboard.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">🏠 ภาพรวม</a>
+  
+   <a href="students.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">👩‍🎓 รายชื่อนักเรียน</a>
+  
+   <a href="scores.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">✏️ กรอกคะแนน</a>
+  
+   <a href="reports.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">🖨️ รายงาน / พิมพ์เอกสาร</a>
+  
+   <a href="p001.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 bg-white/20 font-semibold">📊 ตารางคะแนนรวม</a>
+  
+   <a href="subjects.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">📚 วิชาและงาน</a>
+  
+   <a href="classes.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">🏫 ชั้นและห้อง</a>
+  
+   <a href="settings.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">⚙️ ตัดเกรด</a>
+  
+   <a href="school.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">🏛️ ข้อมูลโรงเรียน</a>
+  
+   <a href="teachers.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">👨‍🏫 จัดการครู</a>
+  
+   <a href="index.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm hover:bg-white/10 md:mt-6">🚪 ออกจากระบบ</a>
+  </nav>
+ </aside>
+ <main class="flex-1 p-4 md:p-8 min-w-0">
+
+ 
+ 
+<div class="flex flex-wrap items-center justify-between gap-3 mb-4"><h1 class="text-2xl font-bold">รายงานคะแนนรวม ม.1</h1><span data-exportbar="tbl"></span></div>
+<form method="get" class="card mb-4 grid md:grid-cols-3 gap-3 no-print">
+ <select name="level" class="inp" onchange="this.form.room.value='';this.form.submit()"><option selected>ม.1</option><option >ม.2</option><option >ม.3</option><option >ม.4</option><option >ม.5</option><option >ม.6</option></select>
+ <select name="room" class="inp" onchange="this.form.submit()"><option value="">ทุกห้อง</option>
+  <option >1</option><option >2</option></select>
+ <input id="q" class="inp" placeholder="🔍 ค้นหาชื่อ/รหัส" oninput="applyFilter()">
+</form>
+<div class="card overflow-x-auto"><table id="tbl" class="tb" data-title="รายงานคะแนน ม.1" data-sub="โรงเรียนดวงดาววิทยา (ตัวอย่าง)">
+ <thead><tr><th>รหัส</th><th>ชื่อ-สกุล</th><th>ห้อง</th><th>ภาษาไทย คะแนน</th><th>ภาษาไทย เกรด</th><th>คณิตศาสตร์ คะแนน</th><th>คณิตศาสตร์ เกรด</th><th>วิทยาศาสตร์ คะแนน</th><th>วิทยาศาสตร์ เกรด</th><th>เกรดเฉลี่ย</th></tr></thead>
+ <tbody><tr data-text="61101 ด.ช. ภูริ มั่นคง"><td>61101</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61101%26type%3Dstudent_report">ด.ช. ภูริ มั่นคง</a></td><td>1</td>
+  <td>74/100</td><td>3</td><td>69/100</td><td>2.5</td><td>69/100</td><td>2.5</td><td class="font-semibold">2.67</td></tr><tr data-text="61102 ด.ญ. สมหญิง บุญมา"><td>61102</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61102%26type%3Dstudent_report">ด.ญ. สมหญิง บุญมา</a></td><td>1</td>
+  <td>69/100</td><td>2.5</td><td>72/100</td><td>3</td><td>78/100</td><td>3.5</td><td class="font-semibold">3.0</td></tr><tr data-text="61103 ด.ญ. ศิริพร รักเรียน"><td>61103</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61103%26type%3Dstudent_report">ด.ญ. ศิริพร รักเรียน</a></td><td>1</td>
+  <td>82/100</td><td>4</td><td>77/100</td><td>3.5</td><td>78/100</td><td>3.5</td><td class="font-semibold">3.67</td></tr><tr data-text="61104 ด.ช. รัชชานนท์ ใจงาม"><td>61104</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61104%26type%3Dstudent_report">ด.ช. รัชชานนท์ ใจงาม</a></td><td>1</td>
+  <td>42/100</td><td>0</td><td>47/100</td><td>0</td><td>56/100</td><td>1.5</td><td class="font-semibold">0.5</td></tr><tr data-text="61105 ด.ช. ธนกร กล้าหาญ"><td>61105</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61105%26type%3Dstudent_report">ด.ช. ธนกร กล้าหาญ</a></td><td>1</td>
+  <td>70/100</td><td>3</td><td>78/100</td><td>3.5</td><td>69/100</td><td>2.5</td><td class="font-semibold">3.0</td></tr><tr data-text="61106 ด.ช. ณัฐวุฒิ พยายาม"><td>61106</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61106%26type%3Dstudent_report">ด.ช. ณัฐวุฒิ พยายาม</a></td><td>1</td>
+  <td>85/100</td><td>4</td><td>77/100</td><td>3.5</td><td>81/100</td><td>4</td><td class="font-semibold">3.83</td></tr><tr data-text="61107 ด.ช. ภูริ พยายาม"><td>61107</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61107%26type%3Dstudent_report">ด.ช. ภูริ พยายาม</a></td><td>1</td>
+  <td>53/100</td><td>1</td><td>48/100</td><td>0</td><td>60/100</td><td>2</td><td class="font-semibold">1.0</td></tr><tr data-text="61108 ด.ช. นนทพัทธ์ แสงทอง"><td>61108</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61108%26type%3Dstudent_report">ด.ช. นนทพัทธ์ แสงทอง</a></td><td>1</td>
+  <td>62/100</td><td>2</td><td>52/100</td><td>1</td><td>53/100</td><td>1</td><td class="font-semibold">1.33</td></tr><tr data-text="61201 ด.ช. กิตติ บุญมา"><td>61201</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61201%26type%3Dstudent_report">ด.ช. กิตติ บุญมา</a></td><td>2</td>
+  <td>68/100</td><td>2.5</td><td>60/100</td><td>2</td><td>63/100</td><td>2</td><td class="font-semibold">2.17</td></tr><tr data-text="61202 ด.ช. สมชาย สุขใจ"><td>61202</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61202%26type%3Dstudent_report">ด.ช. สมชาย สุขใจ</a></td><td>2</td>
+  <td>95/100</td><td>4</td><td>95/100</td><td>4</td><td>95/100</td><td>4</td><td class="font-semibold">4.0</td></tr><tr data-text="61203 ด.ญ. กมลชนก ศรีสุข"><td>61203</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61203%26type%3Dstudent_report">ด.ญ. กมลชนก ศรีสุข</a></td><td>2</td>
+  <td>65/100</td><td>2.5</td><td>62/100</td><td>2</td><td>50/100</td><td>1</td><td class="font-semibold">1.83</td></tr><tr data-text="61204 ด.ญ. กมลชนก เจริญผล"><td>61204</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61204%26type%3Dstudent_report">ด.ญ. กมลชนก เจริญผล</a></td><td>2</td>
+  <td>96/100</td><td>4</td><td>82/100</td><td>4</td><td>93/100</td><td>4</td><td class="font-semibold">4.0</td></tr><tr data-text="61205 ด.ช. นนทพัทธ์ ใจงาม"><td>61205</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61205%26type%3Dstudent_report">ด.ช. นนทพัทธ์ ใจงาม</a></td><td>2</td>
+  <td>97/100</td><td>4</td><td>90/100</td><td>4</td><td>96/100</td><td>4</td><td class="font-semibold">4.0</td></tr><tr data-text="61206 ด.ช. รัชชานนท์ เจริญผล"><td>61206</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61206%26type%3Dstudent_report">ด.ช. รัชชานนท์ เจริญผล</a></td><td>2</td>
+  <td>93/100</td><td>4</td><td>90/100</td><td>4</td><td>88/100</td><td>4</td><td class="font-semibold">4.0</td></tr><tr data-text="61207 ด.ญ. พิมพ์ชนก รักเรียน"><td>61207</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61207%26type%3Dstudent_report">ด.ญ. พิมพ์ชนก รักเรียน</a></td><td>2</td>
+  <td>53/100</td><td>1</td><td>47/100</td><td>0</td><td>57/100</td><td>1.5</td><td class="font-semibold">0.83</td></tr><tr data-text="61208 ด.ญ. วรัญญา แสงทอง"><td>61208</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61208%26type%3Dstudent_report">ด.ญ. วรัญญา แสงทอง</a></td><td>2</td>
+  <td>31/100</td><td>0</td><td>41/100</td><td>0</td><td>41/100</td><td>0</td><td class="font-semibold">0.0</td></tr></tbody></table></div>
+</main></div>
+<script>
+// ---------- ส่วนช่วย: ส่งออก Excel / Word / PDF / พิมพ์ (อ่านข้อมูลจากตารางที่เห็นอยู่) ----------
+function tableData(id){
+  const out=[];
+  document.querySelectorAll('#'+id+' tr').forEach(tr=>{
+    if(tr.style.display==='none') return;
+    out.push([...tr.children].filter(c=>!c.classList.contains('no-export')).map(c=>{
+      const i=c.querySelector('input,select'); const t=(i?i.value:c.innerText).trim();
+      return (/^-?[1-9]\d{0,6}(\.\d+)?$/.test(t))?Number(t):t;}));
+  });
+  return out;
+}
+function htmlTable(id){
+  const t=document.getElementById(id), d=tableData(id);
+  let h='<h2 style="font-family:Prompt,sans-serif">'+t.dataset.title+'</h2><p style="font-family:Prompt,sans-serif">'+(t.dataset.sub||'')+'</p>';
+  h+='<table border="1" cellspacing="0" cellpadding="5" style="border-collapse:collapse;font-family:Prompt,sans-serif;font-size:12px">';
+  d.forEach((r,i)=>{h+='<tr>'+r.map(c=>(i==0?'<th style="background:#eef2ff">':'<td>')+c+(i==0?'</th>':'</td>')).join('')+'</tr>'});
+  return h+'</table>';
+}
+function exportExcel(id){const t=document.getElementById(id);const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet([[t.dataset.title],[t.dataset.sub||''],[]].concat(tableData(id))),'คะแนน');
+  XLSX.writeFile(wb,t.dataset.title+'.xlsx');}
+function exportWord(id){const t=document.getElementById(id);
+  const html='<html><head><meta charset="utf-8"></head><body>'+htmlTable(id)+'</body></html>';
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+html],{type:'application/msword'}));
+  a.download=t.dataset.title+'.doc';a.click();}
+function exportPDF(id){const t=document.getElementById(id);
+  html2pdf().set({margin:10,filename:t.dataset.title+'.pdf',html2canvas:{scale:2},
+    jsPDF:{unit:'mm',format:'a4',orientation:tableData(id)[0].length>7?'landscape':'portrait'}}).from(htmlTable(id),'string').save();}
+function exportBar(id){return `<span class="no-print flex flex-wrap gap-2">
+  <button class="btn btn-gray btn-sm" onclick="window.print()">🖨️ พิมพ์</button>
+  <button class="btn btn-gray btn-sm" onclick="exportPDF('${id}')">📄 PDF</button>
+  <button class="btn btn-gray btn-sm" onclick="exportExcel('${id}')">📗 Excel</button>
+  <button class="btn btn-gray btn-sm" onclick="exportWord('${id}')">📘 Word</button></span>`;}
+document.querySelectorAll('[data-exportbar]').forEach(e=>e.innerHTML=exportBar(e.dataset.exportbar));
+// ---------- ส่วนช่วย: เลือกชั้น -> ห้อง ----------
+const LEVELS=[{"name": "\u0e21.1", "rooms": ["1", "2"]}, {"name": "\u0e21.2", "rooms": ["1", "2"]}, {"name": "\u0e21.3", "rooms": ["1", "2"]}, {"name": "\u0e21.4", "rooms": ["1", "2"]}, {"name": "\u0e21.5", "rooms": ["1", "2"]}, {"name": "\u0e21.6", "rooms": ["1", "2"]}];
+function fillRooms(sel,level,keep,all){
+  const rooms=(LEVELS.find(l=>l.name===level)||{rooms:[]}).rooms;
+  sel.innerHTML=(all?'<option value="">ทุกห้อง</option>':'')+rooms.map(r=>`<option ${r===keep?'selected':''}>${r}</option>`).join('');
+}
+</script>
+<script>
+function applyFilter(){const q=document.getElementById('q').value.toLowerCase();
+ document.querySelectorAll('#tbl tbody tr').forEach(tr=>tr.style.display=(!q||tr.dataset.text.toLowerCase().includes(q))?'':'none');}
+</script>
+</body></html>

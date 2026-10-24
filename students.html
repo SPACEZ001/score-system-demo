@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>โรงเรียนดวงดาววิทยา (ตัวอย่าง)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Prompt','sans-serif']}}}}</script>
+<style type="text/tailwindcss">
+@layer components{
+ .btn{@apply inline-flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition cursor-pointer}
+ .btn-gray{@apply bg-white text-slate-700 border border-slate-200 hover:bg-slate-50}
+ .btn-red{@apply bg-rose-500 text-white hover:bg-rose-600}
+ .btn-sm{@apply px-3 py-1 text-xs}
+ .inp{@apply w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300}
+ .card{@apply bg-white rounded-2xl shadow-sm border border-slate-100 p-5}
+ .tb{@apply w-full text-sm}
+ .tb th{@apply bg-indigo-50 text-indigo-800 text-left px-3 py-2 font-semibold whitespace-nowrap}
+ .tb td{@apply px-3 py-2 border-b border-slate-100}
+ .tb tbody tr:hover{@apply bg-slate-50}
+ .pill{@apply inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-700}
+}
+</style>
+<style>
+ @media print{ aside,.no-print{display:none!important} body{background:#fff!important} main{padding:0!important}
+  .card{box-shadow:none!important;border:none!important} .tb th,.tb td{border:1px solid #cbd5e1} .tb th{background:#eef2ff!important;-webkit-print-color-adjust:exact} }
+ dialog::backdrop{background:rgba(15,23,42,.5)}
+</style><script>window.STATIC_PATH="/students";</script><script src="demo_map.js"></script><script src="demo_shim.js"></script></head>
+<body class="bg-slate-100 font-sans text-slate-800"><div style="position:sticky;top:0;z-index:50;background:#f59e0b;color:#fff;text-align:center;padding:6px 10px;font-size:13px">🔎 เว็บตัวอย่างสำหรับดูเท่านั้น — บันทึก/แก้ไขข้อมูลไม่ได้ · ข้อมูลทั้งหมดเป็นข้อมูลสมมติ (ตัวระบบจริงเขียนด้วย Python)</div>
+
+<div class="md:flex min-h-screen">
+ <aside class="md:w-60 shrink-0 bg-gradient-to-b from-indigo-700 to-violet-800 text-white p-4 md:p-5">
+  <div class="text-lg font-bold mb-1">🎓 โรงเรียนดวงดาววิทยา (ตัวอย่าง)</div>
+  <div class="text-xs text-indigo-200 mb-4">แอดมิน (แอดมิน)</div>
+  <nav class="flex md:block gap-1 overflow-x-auto">
+  
+   <a href="dashboard.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">🏠 ภาพรวม</a>
+  
+   <a href="students.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 bg-white/20 font-semibold">👩‍🎓 รายชื่อนักเรียน</a>
+  
+   <a href="scores.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">✏️ กรอกคะแนน</a>
+  
+   <a href="reports.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">🖨️ รายงาน / พิมพ์เอกสาร</a>
+  
+   <a href="p001.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">📊 ตารางคะแนนรวม</a>
+  
+   <a href="subjects.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">📚 วิชาและงาน</a>
+  
+   <a href="classes.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">🏫 ชั้นและห้อง</a>
+  
+   <a href="settings.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">⚙️ ตัดเกรด</a>
+  
+   <a href="school.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">🏛️ ข้อมูลโรงเรียน</a>
+  
+   <a href="teachers.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm mb-1 hover:bg-white/10">👨‍🏫 จัดการครู</a>
+  
+   <a href="index.html" class="block whitespace-nowrap px-3 py-2 rounded-xl text-sm hover:bg-white/10 md:mt-6">🚪 ออกจากระบบ</a>
+  </nav>
+ </aside>
+ <main class="flex-1 p-4 md:p-8 min-w-0">
+
+ 
+ 
+<div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+ <h1 class="text-2xl font-bold">รายชื่อนักเรียน <span id="count" class="pill"></span></h1>
+ <div class="flex flex-wrap gap-2"><button class="btn" onclick="openForm()">➕ เพิ่มนักเรียน</button><span data-exportbar="tbl"></span></div>
+</div>
+<div class="card mb-4 grid md:grid-cols-3 gap-3 no-print">
+ <input id="q" class="inp" placeholder="🔍 พิมพ์ชื่อหรือรหัส เช่น สม..." oninput="applyFilter()">
+ <select id="fLevel" class="inp" onchange="fillRooms(fRoom,this.value,'',true);fRoom.disabled=!this.value;applyFilter()">
+  <option value="">ทุกชั้น</option><option>ม.1</option><option>ม.2</option><option>ม.3</option><option>ม.4</option><option>ม.5</option><option>ม.6</option></select>
+ <select id="fRoom" class="inp" disabled onchange="applyFilter()"><option value="">ทุกห้อง</option></select>
+</div>
+<div class="card overflow-x-auto"><table id="tbl" class="tb" data-title="รายชื่อนักเรียน" data-sub="โรงเรียนดวงดาววิทยา (ตัวอย่าง)">
+ <thead><tr><th>รหัส</th><th>ชื่อ-สกุล</th><th>ชั้น</th><th>ห้อง</th><th>วันเกิด</th><th class="no-export no-print">จัดการ</th></tr></thead>
+ <tbody>
+ <tr data-level="ม.1" data-room="1" data-text="61101 ด.ช. ภูริ มั่นคง">
+  <td>61101</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61101%26type%3Dstudent_report">ด.ช. ภูริ มั่นคง</a></td>
+  <td>ม.1</td><td>1</td><td>08/11/2555</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "08/11/2555", "id": "61101", "level": "\u0e21.1", "name": "\u0e14.\u0e0a. \u0e20\u0e39\u0e23\u0e34 \u0e21\u0e31\u0e48\u0e19\u0e04\u0e07", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/61101" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/61101" class="inline" onsubmit="return confirm('ลบ ด.ช. ภูริ มั่นคง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.1" data-room="1" data-text="61102 ด.ญ. สมหญิง บุญมา">
+  <td>61102</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61102%26type%3Dstudent_report">ด.ญ. สมหญิง บุญมา</a></td>
+  <td>ม.1</td><td>1</td><td>04/09/2555</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "04/09/2555", "id": "61102", "level": "\u0e21.1", "name": "\u0e14.\u0e0d. \u0e2a\u0e21\u0e2b\u0e0d\u0e34\u0e07 \u0e1a\u0e38\u0e0d\u0e21\u0e32", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/61102" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/61102" class="inline" onsubmit="return confirm('ลบ ด.ญ. สมหญิง บุญมา ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.1" data-room="1" data-text="61103 ด.ญ. ศิริพร รักเรียน">
+  <td>61103</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61103%26type%3Dstudent_report">ด.ญ. ศิริพร รักเรียน</a></td>
+  <td>ม.1</td><td>1</td><td>11/12/2555</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "11/12/2555", "id": "61103", "level": "\u0e21.1", "name": "\u0e14.\u0e0d. \u0e28\u0e34\u0e23\u0e34\u0e1e\u0e23 \u0e23\u0e31\u0e01\u0e40\u0e23\u0e35\u0e22\u0e19", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/61103" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/61103" class="inline" onsubmit="return confirm('ลบ ด.ญ. ศิริพร รักเรียน ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.1" data-room="1" data-text="61104 ด.ช. รัชชานนท์ ใจงาม">
+  <td>61104</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61104%26type%3Dstudent_report">ด.ช. รัชชานนท์ ใจงาม</a></td>
+  <td>ม.1</td><td>1</td><td>19/08/2555</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "19/08/2555", "id": "61104", "level": "\u0e21.1", "name": "\u0e14.\u0e0a. \u0e23\u0e31\u0e0a\u0e0a\u0e32\u0e19\u0e19\u0e17\u0e4c \u0e43\u0e08\u0e07\u0e32\u0e21", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/61104" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/61104" class="inline" onsubmit="return confirm('ลบ ด.ช. รัชชานนท์ ใจงาม ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.1" data-room="1" data-text="61105 ด.ช. ธนกร กล้าหาญ">
+  <td>61105</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61105%26type%3Dstudent_report">ด.ช. ธนกร กล้าหาญ</a></td>
+  <td>ม.1</td><td>1</td><td>04/08/2555</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "04/08/2555", "id": "61105", "level": "\u0e21.1", "name": "\u0e14.\u0e0a. \u0e18\u0e19\u0e01\u0e23 \u0e01\u0e25\u0e49\u0e32\u0e2b\u0e32\u0e0d", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/61105" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/61105" class="inline" onsubmit="return confirm('ลบ ด.ช. ธนกร กล้าหาญ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.1" data-room="1" data-text="61106 ด.ช. ณัฐวุฒิ พยายาม">
+  <td>61106</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61106%26type%3Dstudent_report">ด.ช. ณัฐวุฒิ พยายาม</a></td>
+  <td>ม.1</td><td>1</td><td>13/04/2555</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "13/04/2555", "id": "61106", "level": "\u0e21.1", "name": "\u0e14.\u0e0a. \u0e13\u0e31\u0e10\u0e27\u0e38\u0e12\u0e34 \u0e1e\u0e22\u0e32\u0e22\u0e32\u0e21", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/61106" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/61106" class="inline" onsubmit="return confirm('ลบ ด.ช. ณัฐวุฒิ พยายาม ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.1" data-room="1" data-text="61107 ด.ช. ภูริ พยายาม">
+  <td>61107</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61107%26type%3Dstudent_report">ด.ช. ภูริ พยายาม</a></td>
+  <td>ม.1</td><td>1</td><td>22/12/2555</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "22/12/2555", "id": "61107", "level": "\u0e21.1", "name": "\u0e14.\u0e0a. \u0e20\u0e39\u0e23\u0e34 \u0e1e\u0e22\u0e32\u0e22\u0e32\u0e21", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/61107" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/61107" class="inline" onsubmit="return confirm('ลบ ด.ช. ภูริ พยายาม ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.1" data-room="1" data-text="61108 ด.ช. นนทพัทธ์ แสงทอง">
+  <td>61108</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61108%26type%3Dstudent_report">ด.ช. นนทพัทธ์ แสงทอง</a></td>
+  <td>ม.1</td><td>1</td><td>12/10/2555</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "12/10/2555", "id": "61108", "level": "\u0e21.1", "name": "\u0e14.\u0e0a. \u0e19\u0e19\u0e17\u0e1e\u0e31\u0e17\u0e18\u0e4c \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/61108" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/61108" class="inline" onsubmit="return confirm('ลบ ด.ช. นนทพัทธ์ แสงทอง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.1" data-room="2" data-text="61201 ด.ช. กิตติ บุญมา">
+  <td>61201</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61201%26type%3Dstudent_report">ด.ช. กิตติ บุญมา</a></td>
+  <td>ม.1</td><td>2</td><td>16/12/2555</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "16/12/2555", "id": "61201", "level": "\u0e21.1", "name": "\u0e14.\u0e0a. \u0e01\u0e34\u0e15\u0e15\u0e34 \u0e1a\u0e38\u0e0d\u0e21\u0e32", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/61201" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/61201" class="inline" onsubmit="return confirm('ลบ ด.ช. กิตติ บุญมา ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.1" data-room="2" data-text="61202 ด.ช. สมชาย สุขใจ">
+  <td>61202</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61202%26type%3Dstudent_report">ด.ช. สมชาย สุขใจ</a></td>
+  <td>ม.1</td><td>2</td><td>18/09/2555</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "18/09/2555", "id": "61202", "level": "\u0e21.1", "name": "\u0e14.\u0e0a. \u0e2a\u0e21\u0e0a\u0e32\u0e22 \u0e2a\u0e38\u0e02\u0e43\u0e08", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/61202" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/61202" class="inline" onsubmit="return confirm('ลบ ด.ช. สมชาย สุขใจ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.1" data-room="2" data-text="61203 ด.ญ. กมลชนก ศรีสุข">
+  <td>61203</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61203%26type%3Dstudent_report">ด.ญ. กมลชนก ศรีสุข</a></td>
+  <td>ม.1</td><td>2</td><td>09/04/2555</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "09/04/2555", "id": "61203", "level": "\u0e21.1", "name": "\u0e14.\u0e0d. \u0e01\u0e21\u0e25\u0e0a\u0e19\u0e01 \u0e28\u0e23\u0e35\u0e2a\u0e38\u0e02", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/61203" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/61203" class="inline" onsubmit="return confirm('ลบ ด.ญ. กมลชนก ศรีสุข ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.1" data-room="2" data-text="61204 ด.ญ. กมลชนก เจริญผล">
+  <td>61204</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61204%26type%3Dstudent_report">ด.ญ. กมลชนก เจริญผล</a></td>
+  <td>ม.1</td><td>2</td><td>12/11/2555</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "12/11/2555", "id": "61204", "level": "\u0e21.1", "name": "\u0e14.\u0e0d. \u0e01\u0e21\u0e25\u0e0a\u0e19\u0e01 \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/61204" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/61204" class="inline" onsubmit="return confirm('ลบ ด.ญ. กมลชนก เจริญผล ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.1" data-room="2" data-text="61205 ด.ช. นนทพัทธ์ ใจงาม">
+  <td>61205</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61205%26type%3Dstudent_report">ด.ช. นนทพัทธ์ ใจงาม</a></td>
+  <td>ม.1</td><td>2</td><td>06/03/2555</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "06/03/2555", "id": "61205", "level": "\u0e21.1", "name": "\u0e14.\u0e0a. \u0e19\u0e19\u0e17\u0e1e\u0e31\u0e17\u0e18\u0e4c \u0e43\u0e08\u0e07\u0e32\u0e21", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/61205" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/61205" class="inline" onsubmit="return confirm('ลบ ด.ช. นนทพัทธ์ ใจงาม ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.1" data-room="2" data-text="61206 ด.ช. รัชชานนท์ เจริญผล">
+  <td>61206</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61206%26type%3Dstudent_report">ด.ช. รัชชานนท์ เจริญผล</a></td>
+  <td>ม.1</td><td>2</td><td>14/04/2555</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "14/04/2555", "id": "61206", "level": "\u0e21.1", "name": "\u0e14.\u0e0a. \u0e23\u0e31\u0e0a\u0e0a\u0e32\u0e19\u0e19\u0e17\u0e4c \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/61206" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/61206" class="inline" onsubmit="return confirm('ลบ ด.ช. รัชชานนท์ เจริญผล ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.1" data-room="2" data-text="61207 ด.ญ. พิมพ์ชนก รักเรียน">
+  <td>61207</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61207%26type%3Dstudent_report">ด.ญ. พิมพ์ชนก รักเรียน</a></td>
+  <td>ม.1</td><td>2</td><td>17/03/2555</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "17/03/2555", "id": "61207", "level": "\u0e21.1", "name": "\u0e14.\u0e0d. \u0e1e\u0e34\u0e21\u0e1e\u0e4c\u0e0a\u0e19\u0e01 \u0e23\u0e31\u0e01\u0e40\u0e23\u0e35\u0e22\u0e19", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/61207" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/61207" class="inline" onsubmit="return confirm('ลบ ด.ญ. พิมพ์ชนก รักเรียน ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.1" data-room="2" data-text="61208 ด.ญ. วรัญญา แสงทอง">
+  <td>61208</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D61208%26type%3Dstudent_report">ด.ญ. วรัญญา แสงทอง</a></td>
+  <td>ม.1</td><td>2</td><td>04/09/2555</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "04/09/2555", "id": "61208", "level": "\u0e21.1", "name": "\u0e14.\u0e0d. \u0e27\u0e23\u0e31\u0e0d\u0e0d\u0e32 \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/61208" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/61208" class="inline" onsubmit="return confirm('ลบ ด.ญ. วรัญญา แสงทอง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.2" data-room="1" data-text="62101 ด.ช. กิตติ กล้าหาญ">
+  <td>62101</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D62101%26type%3Dstudent_report">ด.ช. กิตติ กล้าหาญ</a></td>
+  <td>ม.2</td><td>1</td><td>17/04/2554</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "17/04/2554", "id": "62101", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e01\u0e34\u0e15\u0e15\u0e34 \u0e01\u0e25\u0e49\u0e32\u0e2b\u0e32\u0e0d", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/62101" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/62101" class="inline" onsubmit="return confirm('ลบ ด.ช. กิตติ กล้าหาญ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.2" data-room="1" data-text="62102 ด.ญ. ณัฐธิดา แสงทอง">
+  <td>62102</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D62102%26type%3Dstudent_report">ด.ญ. ณัฐธิดา แสงทอง</a></td>
+  <td>ม.2</td><td>1</td><td>21/11/2554</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "21/11/2554", "id": "62102", "level": "\u0e21.2", "name": "\u0e14.\u0e0d. \u0e13\u0e31\u0e10\u0e18\u0e34\u0e14\u0e32 \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/62102" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/62102" class="inline" onsubmit="return confirm('ลบ ด.ญ. ณัฐธิดา แสงทอง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.2" data-room="1" data-text="62103 ด.ช. ณัฐวุฒิ พยายาม">
+  <td>62103</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D62103%26type%3Dstudent_report">ด.ช. ณัฐวุฒิ พยายาม</a></td>
+  <td>ม.2</td><td>1</td><td>24/06/2554</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "24/06/2554", "id": "62103", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e13\u0e31\u0e10\u0e27\u0e38\u0e12\u0e34 \u0e1e\u0e22\u0e32\u0e22\u0e32\u0e21", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/62103" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/62103" class="inline" onsubmit="return confirm('ลบ ด.ช. ณัฐวุฒิ พยายาม ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.2" data-room="1" data-text="62104 ด.ช. ปิติ เจริญผล">
+  <td>62104</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D62104%26type%3Dstudent_report">ด.ช. ปิติ เจริญผล</a></td>
+  <td>ม.2</td><td>1</td><td>09/03/2554</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "09/03/2554", "id": "62104", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e1b\u0e34\u0e15\u0e34 \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/62104" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/62104" class="inline" onsubmit="return confirm('ลบ ด.ช. ปิติ เจริญผล ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.2" data-room="1" data-text="62105 ด.ญ. สุภาพร กล้าหาญ">
+  <td>62105</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D62105%26type%3Dstudent_report">ด.ญ. สุภาพร กล้าหาญ</a></td>
+  <td>ม.2</td><td>1</td><td>20/04/2554</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "20/04/2554", "id": "62105", "level": "\u0e21.2", "name": "\u0e14.\u0e0d. \u0e2a\u0e38\u0e20\u0e32\u0e1e\u0e23 \u0e01\u0e25\u0e49\u0e32\u0e2b\u0e32\u0e0d", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/62105" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/62105" class="inline" onsubmit="return confirm('ลบ ด.ญ. สุภาพร กล้าหาญ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.2" data-room="1" data-text="62106 ด.ช. ธนกร เจริญผล">
+  <td>62106</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D62106%26type%3Dstudent_report">ด.ช. ธนกร เจริญผล</a></td>
+  <td>ม.2</td><td>1</td><td>17/04/2554</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "17/04/2554", "id": "62106", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e18\u0e19\u0e01\u0e23 \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/62106" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/62106" class="inline" onsubmit="return confirm('ลบ ด.ช. ธนกร เจริญผล ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.2" data-room="1" data-text="62107 ด.ช. ปิติ ศรีสุข">
+  <td>62107</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D62107%26type%3Dstudent_report">ด.ช. ปิติ ศรีสุข</a></td>
+  <td>ม.2</td><td>1</td><td>16/09/2554</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "16/09/2554", "id": "62107", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e1b\u0e34\u0e15\u0e34 \u0e28\u0e23\u0e35\u0e2a\u0e38\u0e02", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/62107" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/62107" class="inline" onsubmit="return confirm('ลบ ด.ช. ปิติ ศรีสุข ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.2" data-room="1" data-text="62108 ด.ญ. ปาริชาติ แสงทอง">
+  <td>62108</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D62108%26type%3Dstudent_report">ด.ญ. ปาริชาติ แสงทอง</a></td>
+  <td>ม.2</td><td>1</td><td>14/03/2554</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "14/03/2554", "id": "62108", "level": "\u0e21.2", "name": "\u0e14.\u0e0d. \u0e1b\u0e32\u0e23\u0e34\u0e0a\u0e32\u0e15\u0e34 \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/62108" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/62108" class="inline" onsubmit="return confirm('ลบ ด.ญ. ปาริชาติ แสงทอง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.2" data-room="2" data-text="62201 ด.ช. นนทพัทธ์ มั่นคง">
+  <td>62201</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D62201%26type%3Dstudent_report">ด.ช. นนทพัทธ์ มั่นคง</a></td>
+  <td>ม.2</td><td>2</td><td>10/04/2554</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "10/04/2554", "id": "62201", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e19\u0e19\u0e17\u0e1e\u0e31\u0e17\u0e18\u0e4c \u0e21\u0e31\u0e48\u0e19\u0e04\u0e07", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/62201" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/62201" class="inline" onsubmit="return confirm('ลบ ด.ช. นนทพัทธ์ มั่นคง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.2" data-room="2" data-text="62202 ด.ช. สมชาย ไพเราะ">
+  <td>62202</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D62202%26type%3Dstudent_report">ด.ช. สมชาย ไพเราะ</a></td>
+  <td>ม.2</td><td>2</td><td>19/09/2554</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "19/09/2554", "id": "62202", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e2a\u0e21\u0e0a\u0e32\u0e22 \u0e44\u0e1e\u0e40\u0e23\u0e32\u0e30", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/62202" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/62202" class="inline" onsubmit="return confirm('ลบ ด.ช. สมชาย ไพเราะ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.2" data-room="2" data-text="62203 ด.ญ. มานี ศรีสุข">
+  <td>62203</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D62203%26type%3Dstudent_report">ด.ญ. มานี ศรีสุข</a></td>
+  <td>ม.2</td><td>2</td><td>23/09/2554</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "23/09/2554", "id": "62203", "level": "\u0e21.2", "name": "\u0e14.\u0e0d. \u0e21\u0e32\u0e19\u0e35 \u0e28\u0e23\u0e35\u0e2a\u0e38\u0e02", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/62203" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/62203" class="inline" onsubmit="return confirm('ลบ ด.ญ. มานี ศรีสุข ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.2" data-room="2" data-text="62204 ด.ช. ปิติ แสงทอง">
+  <td>62204</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D62204%26type%3Dstudent_report">ด.ช. ปิติ แสงทอง</a></td>
+  <td>ม.2</td><td>2</td><td>15/09/2554</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "15/09/2554", "id": "62204", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e1b\u0e34\u0e15\u0e34 \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/62204" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/62204" class="inline" onsubmit="return confirm('ลบ ด.ช. ปิติ แสงทอง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.2" data-room="2" data-text="62205 ด.ช. สมชาย ศรีสุข">
+  <td>62205</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D62205%26type%3Dstudent_report">ด.ช. สมชาย ศรีสุข</a></td>
+  <td>ม.2</td><td>2</td><td>08/12/2554</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "08/12/2554", "id": "62205", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e2a\u0e21\u0e0a\u0e32\u0e22 \u0e28\u0e23\u0e35\u0e2a\u0e38\u0e02", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/62205" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/62205" class="inline" onsubmit="return confirm('ลบ ด.ช. สมชาย ศรีสุข ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.2" data-room="2" data-text="62206 ด.ญ. พิมพ์ชนก วงศ์ดี">
+  <td>62206</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D62206%26type%3Dstudent_report">ด.ญ. พิมพ์ชนก วงศ์ดี</a></td>
+  <td>ม.2</td><td>2</td><td>20/10/2554</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "20/10/2554", "id": "62206", "level": "\u0e21.2", "name": "\u0e14.\u0e0d. \u0e1e\u0e34\u0e21\u0e1e\u0e4c\u0e0a\u0e19\u0e01 \u0e27\u0e07\u0e28\u0e4c\u0e14\u0e35", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/62206" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/62206" class="inline" onsubmit="return confirm('ลบ ด.ญ. พิมพ์ชนก วงศ์ดี ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.2" data-room="2" data-text="62207 ด.ช. อนุชา รักเรียน">
+  <td>62207</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D62207%26type%3Dstudent_report">ด.ช. อนุชา รักเรียน</a></td>
+  <td>ม.2</td><td>2</td><td>16/01/2554</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "16/01/2554", "id": "62207", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e2d\u0e19\u0e38\u0e0a\u0e32 \u0e23\u0e31\u0e01\u0e40\u0e23\u0e35\u0e22\u0e19", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/62207" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/62207" class="inline" onsubmit="return confirm('ลบ ด.ช. อนุชา รักเรียน ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.2" data-room="2" data-text="62208 ด.ช. ธนกร แสงทอง">
+  <td>62208</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D62208%26type%3Dstudent_report">ด.ช. ธนกร แสงทอง</a></td>
+  <td>ม.2</td><td>2</td><td>04/12/2554</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "04/12/2554", "id": "62208", "level": "\u0e21.2", "name": "\u0e14.\u0e0a. \u0e18\u0e19\u0e01\u0e23 \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/62208" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/62208" class="inline" onsubmit="return confirm('ลบ ด.ช. ธนกร แสงทอง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.3" data-room="1" data-text="63101 ด.ช. อนุชา เจริญผล">
+  <td>63101</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D63101%26type%3Dstudent_report">ด.ช. อนุชา เจริญผล</a></td>
+  <td>ม.3</td><td>1</td><td>07/12/2553</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "07/12/2553", "id": "63101", "level": "\u0e21.3", "name": "\u0e14.\u0e0a. \u0e2d\u0e19\u0e38\u0e0a\u0e32 \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/63101" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/63101" class="inline" onsubmit="return confirm('ลบ ด.ช. อนุชา เจริญผล ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.3" data-room="1" data-text="63102 ด.ช. เจษฎา กล้าหาญ">
+  <td>63102</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D63102%26type%3Dstudent_report">ด.ช. เจษฎา กล้าหาญ</a></td>
+  <td>ม.3</td><td>1</td><td>09/07/2553</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "09/07/2553", "id": "63102", "level": "\u0e21.3", "name": "\u0e14.\u0e0a. \u0e40\u0e08\u0e29\u0e0e\u0e32 \u0e01\u0e25\u0e49\u0e32\u0e2b\u0e32\u0e0d", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/63102" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/63102" class="inline" onsubmit="return confirm('ลบ ด.ช. เจษฎา กล้าหาญ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.3" data-room="1" data-text="63103 ด.ญ. พิมพ์ชนก ไพเราะ">
+  <td>63103</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D63103%26type%3Dstudent_report">ด.ญ. พิมพ์ชนก ไพเราะ</a></td>
+  <td>ม.3</td><td>1</td><td>28/05/2553</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "28/05/2553", "id": "63103", "level": "\u0e21.3", "name": "\u0e14.\u0e0d. \u0e1e\u0e34\u0e21\u0e1e\u0e4c\u0e0a\u0e19\u0e01 \u0e44\u0e1e\u0e40\u0e23\u0e32\u0e30", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/63103" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/63103" class="inline" onsubmit="return confirm('ลบ ด.ญ. พิมพ์ชนก ไพเราะ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.3" data-room="1" data-text="63104 ด.ช. ปิติ พยายาม">
+  <td>63104</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D63104%26type%3Dstudent_report">ด.ช. ปิติ พยายาม</a></td>
+  <td>ม.3</td><td>1</td><td>17/08/2553</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "17/08/2553", "id": "63104", "level": "\u0e21.3", "name": "\u0e14.\u0e0a. \u0e1b\u0e34\u0e15\u0e34 \u0e1e\u0e22\u0e32\u0e22\u0e32\u0e21", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/63104" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/63104" class="inline" onsubmit="return confirm('ลบ ด.ช. ปิติ พยายาม ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.3" data-room="1" data-text="63105 ด.ญ. อรุณี ไพเราะ">
+  <td>63105</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D63105%26type%3Dstudent_report">ด.ญ. อรุณี ไพเราะ</a></td>
+  <td>ม.3</td><td>1</td><td>14/12/2553</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "14/12/2553", "id": "63105", "level": "\u0e21.3", "name": "\u0e14.\u0e0d. \u0e2d\u0e23\u0e38\u0e13\u0e35 \u0e44\u0e1e\u0e40\u0e23\u0e32\u0e30", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/63105" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/63105" class="inline" onsubmit="return confirm('ลบ ด.ญ. อรุณี ไพเราะ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.3" data-room="1" data-text="63106 ด.ญ. ปาริชาติ กล้าหาญ">
+  <td>63106</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D63106%26type%3Dstudent_report">ด.ญ. ปาริชาติ กล้าหาญ</a></td>
+  <td>ม.3</td><td>1</td><td>10/01/2553</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "10/01/2553", "id": "63106", "level": "\u0e21.3", "name": "\u0e14.\u0e0d. \u0e1b\u0e32\u0e23\u0e34\u0e0a\u0e32\u0e15\u0e34 \u0e01\u0e25\u0e49\u0e32\u0e2b\u0e32\u0e0d", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/63106" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/63106" class="inline" onsubmit="return confirm('ลบ ด.ญ. ปาริชาติ กล้าหาญ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.3" data-room="1" data-text="63107 ด.ช. พงษ์พัฒน์ วงศ์ดี">
+  <td>63107</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D63107%26type%3Dstudent_report">ด.ช. พงษ์พัฒน์ วงศ์ดี</a></td>
+  <td>ม.3</td><td>1</td><td>22/02/2553</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "22/02/2553", "id": "63107", "level": "\u0e21.3", "name": "\u0e14.\u0e0a. \u0e1e\u0e07\u0e29\u0e4c\u0e1e\u0e31\u0e12\u0e19\u0e4c \u0e27\u0e07\u0e28\u0e4c\u0e14\u0e35", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/63107" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/63107" class="inline" onsubmit="return confirm('ลบ ด.ช. พงษ์พัฒน์ วงศ์ดี ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.3" data-room="1" data-text="63108 ด.ญ. ธัญญารัตน์ วงศ์ดี">
+  <td>63108</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D63108%26type%3Dstudent_report">ด.ญ. ธัญญารัตน์ วงศ์ดี</a></td>
+  <td>ม.3</td><td>1</td><td>23/02/2553</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "23/02/2553", "id": "63108", "level": "\u0e21.3", "name": "\u0e14.\u0e0d. \u0e18\u0e31\u0e0d\u0e0d\u0e32\u0e23\u0e31\u0e15\u0e19\u0e4c \u0e27\u0e07\u0e28\u0e4c\u0e14\u0e35", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/63108" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/63108" class="inline" onsubmit="return confirm('ลบ ด.ญ. ธัญญารัตน์ วงศ์ดี ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.3" data-room="2" data-text="63201 ด.ช. ณัฐวุฒิ แสงทอง">
+  <td>63201</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D63201%26type%3Dstudent_report">ด.ช. ณัฐวุฒิ แสงทอง</a></td>
+  <td>ม.3</td><td>2</td><td>01/07/2553</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "01/07/2553", "id": "63201", "level": "\u0e21.3", "name": "\u0e14.\u0e0a. \u0e13\u0e31\u0e10\u0e27\u0e38\u0e12\u0e34 \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/63201" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/63201" class="inline" onsubmit="return confirm('ลบ ด.ช. ณัฐวุฒิ แสงทอง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.3" data-room="2" data-text="63202 ด.ญ. ณัฐธิดา รักเรียน">
+  <td>63202</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D63202%26type%3Dstudent_report">ด.ญ. ณัฐธิดา รักเรียน</a></td>
+  <td>ม.3</td><td>2</td><td>26/05/2553</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "26/05/2553", "id": "63202", "level": "\u0e21.3", "name": "\u0e14.\u0e0d. \u0e13\u0e31\u0e10\u0e18\u0e34\u0e14\u0e32 \u0e23\u0e31\u0e01\u0e40\u0e23\u0e35\u0e22\u0e19", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/63202" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/63202" class="inline" onsubmit="return confirm('ลบ ด.ญ. ณัฐธิดา รักเรียน ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.3" data-room="2" data-text="63203 ด.ญ. วรัญญา ใจงาม">
+  <td>63203</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D63203%26type%3Dstudent_report">ด.ญ. วรัญญา ใจงาม</a></td>
+  <td>ม.3</td><td>2</td><td>22/01/2553</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "22/01/2553", "id": "63203", "level": "\u0e21.3", "name": "\u0e14.\u0e0d. \u0e27\u0e23\u0e31\u0e0d\u0e0d\u0e32 \u0e43\u0e08\u0e07\u0e32\u0e21", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/63203" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/63203" class="inline" onsubmit="return confirm('ลบ ด.ญ. วรัญญา ใจงาม ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.3" data-room="2" data-text="63204 ด.ญ. มานี มั่นคง">
+  <td>63204</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D63204%26type%3Dstudent_report">ด.ญ. มานี มั่นคง</a></td>
+  <td>ม.3</td><td>2</td><td>21/09/2553</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "21/09/2553", "id": "63204", "level": "\u0e21.3", "name": "\u0e14.\u0e0d. \u0e21\u0e32\u0e19\u0e35 \u0e21\u0e31\u0e48\u0e19\u0e04\u0e07", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/63204" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/63204" class="inline" onsubmit="return confirm('ลบ ด.ญ. มานี มั่นคง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.3" data-room="2" data-text="63205 ด.ญ. สมหญิง กล้าหาญ">
+  <td>63205</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D63205%26type%3Dstudent_report">ด.ญ. สมหญิง กล้าหาญ</a></td>
+  <td>ม.3</td><td>2</td><td>27/05/2553</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "27/05/2553", "id": "63205", "level": "\u0e21.3", "name": "\u0e14.\u0e0d. \u0e2a\u0e21\u0e2b\u0e0d\u0e34\u0e07 \u0e01\u0e25\u0e49\u0e32\u0e2b\u0e32\u0e0d", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/63205" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/63205" class="inline" onsubmit="return confirm('ลบ ด.ญ. สมหญิง กล้าหาญ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.3" data-room="2" data-text="63206 ด.ญ. ปาริชาติ ใจงาม">
+  <td>63206</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D63206%26type%3Dstudent_report">ด.ญ. ปาริชาติ ใจงาม</a></td>
+  <td>ม.3</td><td>2</td><td>03/01/2553</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "03/01/2553", "id": "63206", "level": "\u0e21.3", "name": "\u0e14.\u0e0d. \u0e1b\u0e32\u0e23\u0e34\u0e0a\u0e32\u0e15\u0e34 \u0e43\u0e08\u0e07\u0e32\u0e21", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/63206" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/63206" class="inline" onsubmit="return confirm('ลบ ด.ญ. ปาริชาติ ใจงาม ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.3" data-room="2" data-text="63207 ด.ช. เจษฎา ใจงาม">
+  <td>63207</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D63207%26type%3Dstudent_report">ด.ช. เจษฎา ใจงาม</a></td>
+  <td>ม.3</td><td>2</td><td>03/01/2553</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "03/01/2553", "id": "63207", "level": "\u0e21.3", "name": "\u0e14.\u0e0a. \u0e40\u0e08\u0e29\u0e0e\u0e32 \u0e43\u0e08\u0e07\u0e32\u0e21", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/63207" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/63207" class="inline" onsubmit="return confirm('ลบ ด.ช. เจษฎา ใจงาม ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.3" data-room="2" data-text="63208 ด.ญ. ชูใจ เจริญผล">
+  <td>63208</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D63208%26type%3Dstudent_report">ด.ญ. ชูใจ เจริญผล</a></td>
+  <td>ม.3</td><td>2</td><td>08/06/2553</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "08/06/2553", "id": "63208", "level": "\u0e21.3", "name": "\u0e14.\u0e0d. \u0e0a\u0e39\u0e43\u0e08 \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/63208" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/63208" class="inline" onsubmit="return confirm('ลบ ด.ญ. ชูใจ เจริญผล ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.4" data-room="1" data-text="64101 น.ส. อรุณี ไพเราะ">
+  <td>64101</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D64101%26type%3Dstudent_report">น.ส. อรุณี ไพเราะ</a></td>
+  <td>ม.4</td><td>1</td><td>20/02/2552</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "20/02/2552", "id": "64101", "level": "\u0e21.4", "name": "\u0e19.\u0e2a. \u0e2d\u0e23\u0e38\u0e13\u0e35 \u0e44\u0e1e\u0e40\u0e23\u0e32\u0e30", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/64101" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/64101" class="inline" onsubmit="return confirm('ลบ น.ส. อรุณี ไพเราะ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.4" data-room="1" data-text="64102 นาย พงษ์พัฒน์ เจริญผล">
+  <td>64102</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D64102%26type%3Dstudent_report">นาย พงษ์พัฒน์ เจริญผล</a></td>
+  <td>ม.4</td><td>1</td><td>09/06/2552</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "09/06/2552", "id": "64102", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e1e\u0e07\u0e29\u0e4c\u0e1e\u0e31\u0e12\u0e19\u0e4c \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/64102" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/64102" class="inline" onsubmit="return confirm('ลบ นาย พงษ์พัฒน์ เจริญผล ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.4" data-room="1" data-text="64103 นาย ณัฐวุฒิ สุขใจ">
+  <td>64103</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D64103%26type%3Dstudent_report">นาย ณัฐวุฒิ สุขใจ</a></td>
+  <td>ม.4</td><td>1</td><td>02/02/2552</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "02/02/2552", "id": "64103", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e13\u0e31\u0e10\u0e27\u0e38\u0e12\u0e34 \u0e2a\u0e38\u0e02\u0e43\u0e08", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/64103" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/64103" class="inline" onsubmit="return confirm('ลบ นาย ณัฐวุฒิ สุขใจ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.4" data-room="1" data-text="64104 นาย กิตติ เจริญผล">
+  <td>64104</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D64104%26type%3Dstudent_report">นาย กิตติ เจริญผล</a></td>
+  <td>ม.4</td><td>1</td><td>01/02/2552</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "01/02/2552", "id": "64104", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e01\u0e34\u0e15\u0e15\u0e34 \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/64104" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/64104" class="inline" onsubmit="return confirm('ลบ นาย กิตติ เจริญผล ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.4" data-room="1" data-text="64105 น.ส. ธัญญารัตน์ บุญมา">
+  <td>64105</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D64105%26type%3Dstudent_report">น.ส. ธัญญารัตน์ บุญมา</a></td>
+  <td>ม.4</td><td>1</td><td>03/04/2552</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "03/04/2552", "id": "64105", "level": "\u0e21.4", "name": "\u0e19.\u0e2a. \u0e18\u0e31\u0e0d\u0e0d\u0e32\u0e23\u0e31\u0e15\u0e19\u0e4c \u0e1a\u0e38\u0e0d\u0e21\u0e32", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/64105" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/64105" class="inline" onsubmit="return confirm('ลบ น.ส. ธัญญารัตน์ บุญมา ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.4" data-room="1" data-text="64106 นาย อนุชา แสงทอง">
+  <td>64106</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D64106%26type%3Dstudent_report">นาย อนุชา แสงทอง</a></td>
+  <td>ม.4</td><td>1</td><td>24/10/2552</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "24/10/2552", "id": "64106", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e2d\u0e19\u0e38\u0e0a\u0e32 \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/64106" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/64106" class="inline" onsubmit="return confirm('ลบ นาย อนุชา แสงทอง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.4" data-room="1" data-text="64107 น.ส. ปาริชาติ มั่นคง">
+  <td>64107</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D64107%26type%3Dstudent_report">น.ส. ปาริชาติ มั่นคง</a></td>
+  <td>ม.4</td><td>1</td><td>25/03/2552</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "25/03/2552", "id": "64107", "level": "\u0e21.4", "name": "\u0e19.\u0e2a. \u0e1b\u0e32\u0e23\u0e34\u0e0a\u0e32\u0e15\u0e34 \u0e21\u0e31\u0e48\u0e19\u0e04\u0e07", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/64107" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/64107" class="inline" onsubmit="return confirm('ลบ น.ส. ปาริชาติ มั่นคง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.4" data-room="1" data-text="64108 นาย สมชาย แสงทอง">
+  <td>64108</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D64108%26type%3Dstudent_report">นาย สมชาย แสงทอง</a></td>
+  <td>ม.4</td><td>1</td><td>26/04/2552</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "26/04/2552", "id": "64108", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e2a\u0e21\u0e0a\u0e32\u0e22 \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/64108" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/64108" class="inline" onsubmit="return confirm('ลบ นาย สมชาย แสงทอง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.4" data-room="2" data-text="64201 นาย สมชาย เจริญผล">
+  <td>64201</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D64201%26type%3Dstudent_report">นาย สมชาย เจริญผล</a></td>
+  <td>ม.4</td><td>2</td><td>19/04/2552</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "19/04/2552", "id": "64201", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e2a\u0e21\u0e0a\u0e32\u0e22 \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/64201" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/64201" class="inline" onsubmit="return confirm('ลบ นาย สมชาย เจริญผล ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.4" data-room="2" data-text="64202 นาย ปิติ พยายาม">
+  <td>64202</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D64202%26type%3Dstudent_report">นาย ปิติ พยายาม</a></td>
+  <td>ม.4</td><td>2</td><td>21/05/2552</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "21/05/2552", "id": "64202", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e1b\u0e34\u0e15\u0e34 \u0e1e\u0e22\u0e32\u0e22\u0e32\u0e21", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/64202" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/64202" class="inline" onsubmit="return confirm('ลบ นาย ปิติ พยายาม ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.4" data-room="2" data-text="64203 น.ส. ณัฐธิดา บุญมา">
+  <td>64203</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D64203%26type%3Dstudent_report">น.ส. ณัฐธิดา บุญมา</a></td>
+  <td>ม.4</td><td>2</td><td>13/02/2552</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "13/02/2552", "id": "64203", "level": "\u0e21.4", "name": "\u0e19.\u0e2a. \u0e13\u0e31\u0e10\u0e18\u0e34\u0e14\u0e32 \u0e1a\u0e38\u0e0d\u0e21\u0e32", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/64203" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/64203" class="inline" onsubmit="return confirm('ลบ น.ส. ณัฐธิดา บุญมา ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.4" data-room="2" data-text="64204 นาย วีระ มั่นคง">
+  <td>64204</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D64204%26type%3Dstudent_report">นาย วีระ มั่นคง</a></td>
+  <td>ม.4</td><td>2</td><td>26/03/2552</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "26/03/2552", "id": "64204", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e27\u0e35\u0e23\u0e30 \u0e21\u0e31\u0e48\u0e19\u0e04\u0e07", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/64204" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/64204" class="inline" onsubmit="return confirm('ลบ นาย วีระ มั่นคง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.4" data-room="2" data-text="64205 นาย ธนกร บุญมา">
+  <td>64205</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D64205%26type%3Dstudent_report">นาย ธนกร บุญมา</a></td>
+  <td>ม.4</td><td>2</td><td>06/06/2552</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "06/06/2552", "id": "64205", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e18\u0e19\u0e01\u0e23 \u0e1a\u0e38\u0e0d\u0e21\u0e32", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/64205" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/64205" class="inline" onsubmit="return confirm('ลบ นาย ธนกร บุญมา ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.4" data-room="2" data-text="64206 น.ส. ณัฐธิดา เจริญผล">
+  <td>64206</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D64206%26type%3Dstudent_report">น.ส. ณัฐธิดา เจริญผล</a></td>
+  <td>ม.4</td><td>2</td><td>06/05/2552</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "06/05/2552", "id": "64206", "level": "\u0e21.4", "name": "\u0e19.\u0e2a. \u0e13\u0e31\u0e10\u0e18\u0e34\u0e14\u0e32 \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/64206" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/64206" class="inline" onsubmit="return confirm('ลบ น.ส. ณัฐธิดา เจริญผล ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.4" data-room="2" data-text="64207 นาย ปิติ รักเรียน">
+  <td>64207</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D64207%26type%3Dstudent_report">นาย ปิติ รักเรียน</a></td>
+  <td>ม.4</td><td>2</td><td>19/03/2552</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "19/03/2552", "id": "64207", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e1b\u0e34\u0e15\u0e34 \u0e23\u0e31\u0e01\u0e40\u0e23\u0e35\u0e22\u0e19", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/64207" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/64207" class="inline" onsubmit="return confirm('ลบ นาย ปิติ รักเรียน ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.4" data-room="2" data-text="64208 นาย ธนกร เจริญผล">
+  <td>64208</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D64208%26type%3Dstudent_report">นาย ธนกร เจริญผล</a></td>
+  <td>ม.4</td><td>2</td><td>10/10/2552</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "10/10/2552", "id": "64208", "level": "\u0e21.4", "name": "\u0e19\u0e32\u0e22 \u0e18\u0e19\u0e01\u0e23 \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/64208" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/64208" class="inline" onsubmit="return confirm('ลบ นาย ธนกร เจริญผล ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.5" data-room="1" data-text="65101 น.ส. ปาริชาติ แสงทอง">
+  <td>65101</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D65101%26type%3Dstudent_report">น.ส. ปาริชาติ แสงทอง</a></td>
+  <td>ม.5</td><td>1</td><td>12/10/2551</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "12/10/2551", "id": "65101", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e1b\u0e32\u0e23\u0e34\u0e0a\u0e32\u0e15\u0e34 \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/65101" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/65101" class="inline" onsubmit="return confirm('ลบ น.ส. ปาริชาติ แสงทอง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.5" data-room="1" data-text="65102 น.ส. มานี พยายาม">
+  <td>65102</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D65102%26type%3Dstudent_report">น.ส. มานี พยายาม</a></td>
+  <td>ม.5</td><td>1</td><td>20/11/2551</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "20/11/2551", "id": "65102", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e21\u0e32\u0e19\u0e35 \u0e1e\u0e22\u0e32\u0e22\u0e32\u0e21", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/65102" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/65102" class="inline" onsubmit="return confirm('ลบ น.ส. มานี พยายาม ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.5" data-room="1" data-text="65103 น.ส. ศิริพร แสงทอง">
+  <td>65103</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D65103%26type%3Dstudent_report">น.ส. ศิริพร แสงทอง</a></td>
+  <td>ม.5</td><td>1</td><td>07/09/2551</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "07/09/2551", "id": "65103", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e28\u0e34\u0e23\u0e34\u0e1e\u0e23 \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/65103" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/65103" class="inline" onsubmit="return confirm('ลบ น.ส. ศิริพร แสงทอง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.5" data-room="1" data-text="65104 น.ส. วรัญญา ศรีสุข">
+  <td>65104</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D65104%26type%3Dstudent_report">น.ส. วรัญญา ศรีสุข</a></td>
+  <td>ม.5</td><td>1</td><td>24/11/2551</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "24/11/2551", "id": "65104", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e27\u0e23\u0e31\u0e0d\u0e0d\u0e32 \u0e28\u0e23\u0e35\u0e2a\u0e38\u0e02", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/65104" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/65104" class="inline" onsubmit="return confirm('ลบ น.ส. วรัญญา ศรีสุข ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.5" data-room="1" data-text="65105 นาย กิตติ ใจงาม">
+  <td>65105</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D65105%26type%3Dstudent_report">นาย กิตติ ใจงาม</a></td>
+  <td>ม.5</td><td>1</td><td>10/11/2551</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "10/11/2551", "id": "65105", "level": "\u0e21.5", "name": "\u0e19\u0e32\u0e22 \u0e01\u0e34\u0e15\u0e15\u0e34 \u0e43\u0e08\u0e07\u0e32\u0e21", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/65105" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/65105" class="inline" onsubmit="return confirm('ลบ นาย กิตติ ใจงาม ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.5" data-room="1" data-text="65106 น.ส. พิมพ์ชนก ใจงาม">
+  <td>65106</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D65106%26type%3Dstudent_report">น.ส. พิมพ์ชนก ใจงาม</a></td>
+  <td>ม.5</td><td>1</td><td>23/11/2551</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "23/11/2551", "id": "65106", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e1e\u0e34\u0e21\u0e1e\u0e4c\u0e0a\u0e19\u0e01 \u0e43\u0e08\u0e07\u0e32\u0e21", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/65106" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/65106" class="inline" onsubmit="return confirm('ลบ น.ส. พิมพ์ชนก ใจงาม ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.5" data-room="1" data-text="65107 น.ส. วรัญญา เจริญผล">
+  <td>65107</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D65107%26type%3Dstudent_report">น.ส. วรัญญา เจริญผล</a></td>
+  <td>ม.5</td><td>1</td><td>04/02/2551</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "04/02/2551", "id": "65107", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e27\u0e23\u0e31\u0e0d\u0e0d\u0e32 \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/65107" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/65107" class="inline" onsubmit="return confirm('ลบ น.ส. วรัญญา เจริญผล ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.5" data-room="1" data-text="65108 น.ส. มานี ไพเราะ">
+  <td>65108</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D65108%26type%3Dstudent_report">น.ส. มานี ไพเราะ</a></td>
+  <td>ม.5</td><td>1</td><td>22/02/2551</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "22/02/2551", "id": "65108", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e21\u0e32\u0e19\u0e35 \u0e44\u0e1e\u0e40\u0e23\u0e32\u0e30", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/65108" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/65108" class="inline" onsubmit="return confirm('ลบ น.ส. มานี ไพเราะ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.5" data-room="2" data-text="65201 น.ส. ธัญญารัตน์ มั่นคง">
+  <td>65201</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D65201%26type%3Dstudent_report">น.ส. ธัญญารัตน์ มั่นคง</a></td>
+  <td>ม.5</td><td>2</td><td>07/05/2551</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "07/05/2551", "id": "65201", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e18\u0e31\u0e0d\u0e0d\u0e32\u0e23\u0e31\u0e15\u0e19\u0e4c \u0e21\u0e31\u0e48\u0e19\u0e04\u0e07", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/65201" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/65201" class="inline" onsubmit="return confirm('ลบ น.ส. ธัญญารัตน์ มั่นคง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.5" data-room="2" data-text="65202 นาย พงษ์พัฒน์ กล้าหาญ">
+  <td>65202</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D65202%26type%3Dstudent_report">นาย พงษ์พัฒน์ กล้าหาญ</a></td>
+  <td>ม.5</td><td>2</td><td>25/02/2551</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "25/02/2551", "id": "65202", "level": "\u0e21.5", "name": "\u0e19\u0e32\u0e22 \u0e1e\u0e07\u0e29\u0e4c\u0e1e\u0e31\u0e12\u0e19\u0e4c \u0e01\u0e25\u0e49\u0e32\u0e2b\u0e32\u0e0d", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/65202" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/65202" class="inline" onsubmit="return confirm('ลบ นาย พงษ์พัฒน์ กล้าหาญ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.5" data-room="2" data-text="65203 นาย เจษฎา รักเรียน">
+  <td>65203</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D65203%26type%3Dstudent_report">นาย เจษฎา รักเรียน</a></td>
+  <td>ม.5</td><td>2</td><td>26/03/2551</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "26/03/2551", "id": "65203", "level": "\u0e21.5", "name": "\u0e19\u0e32\u0e22 \u0e40\u0e08\u0e29\u0e0e\u0e32 \u0e23\u0e31\u0e01\u0e40\u0e23\u0e35\u0e22\u0e19", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/65203" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/65203" class="inline" onsubmit="return confirm('ลบ นาย เจษฎา รักเรียน ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.5" data-room="2" data-text="65204 น.ส. ศิริพร ไพเราะ">
+  <td>65204</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D65204%26type%3Dstudent_report">น.ส. ศิริพร ไพเราะ</a></td>
+  <td>ม.5</td><td>2</td><td>04/11/2551</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "04/11/2551", "id": "65204", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e28\u0e34\u0e23\u0e34\u0e1e\u0e23 \u0e44\u0e1e\u0e40\u0e23\u0e32\u0e30", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/65204" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/65204" class="inline" onsubmit="return confirm('ลบ น.ส. ศิริพร ไพเราะ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.5" data-room="2" data-text="65205 นาย ธนกร มั่นคง">
+  <td>65205</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D65205%26type%3Dstudent_report">นาย ธนกร มั่นคง</a></td>
+  <td>ม.5</td><td>2</td><td>05/09/2551</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "05/09/2551", "id": "65205", "level": "\u0e21.5", "name": "\u0e19\u0e32\u0e22 \u0e18\u0e19\u0e01\u0e23 \u0e21\u0e31\u0e48\u0e19\u0e04\u0e07", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/65205" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/65205" class="inline" onsubmit="return confirm('ลบ นาย ธนกร มั่นคง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.5" data-room="2" data-text="65206 น.ส. ธัญญารัตน์ บุญมา">
+  <td>65206</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D65206%26type%3Dstudent_report">น.ส. ธัญญารัตน์ บุญมา</a></td>
+  <td>ม.5</td><td>2</td><td>23/04/2551</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "23/04/2551", "id": "65206", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e18\u0e31\u0e0d\u0e0d\u0e32\u0e23\u0e31\u0e15\u0e19\u0e4c \u0e1a\u0e38\u0e0d\u0e21\u0e32", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/65206" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/65206" class="inline" onsubmit="return confirm('ลบ น.ส. ธัญญารัตน์ บุญมา ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.5" data-room="2" data-text="65207 น.ส. ณัฐธิดา กล้าหาญ">
+  <td>65207</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D65207%26type%3Dstudent_report">น.ส. ณัฐธิดา กล้าหาญ</a></td>
+  <td>ม.5</td><td>2</td><td>06/11/2551</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "06/11/2551", "id": "65207", "level": "\u0e21.5", "name": "\u0e19.\u0e2a. \u0e13\u0e31\u0e10\u0e18\u0e34\u0e14\u0e32 \u0e01\u0e25\u0e49\u0e32\u0e2b\u0e32\u0e0d", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/65207" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/65207" class="inline" onsubmit="return confirm('ลบ น.ส. ณัฐธิดา กล้าหาญ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.5" data-room="2" data-text="65208 นาย พงษ์พัฒน์ พยายาม">
+  <td>65208</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D65208%26type%3Dstudent_report">นาย พงษ์พัฒน์ พยายาม</a></td>
+  <td>ม.5</td><td>2</td><td>17/11/2551</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "17/11/2551", "id": "65208", "level": "\u0e21.5", "name": "\u0e19\u0e32\u0e22 \u0e1e\u0e07\u0e29\u0e4c\u0e1e\u0e31\u0e12\u0e19\u0e4c \u0e1e\u0e22\u0e32\u0e22\u0e32\u0e21", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/65208" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/65208" class="inline" onsubmit="return confirm('ลบ นาย พงษ์พัฒน์ พยายาม ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.6" data-room="1" data-text="66101 นาย สมชาย พยายาม">
+  <td>66101</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D66101%26type%3Dstudent_report">นาย สมชาย พยายาม</a></td>
+  <td>ม.6</td><td>1</td><td>19/04/2550</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "19/04/2550", "id": "66101", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e2a\u0e21\u0e0a\u0e32\u0e22 \u0e1e\u0e22\u0e32\u0e22\u0e32\u0e21", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/66101" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/66101" class="inline" onsubmit="return confirm('ลบ นาย สมชาย พยายาม ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.6" data-room="1" data-text="66102 น.ส. สุภาพร ใจงาม">
+  <td>66102</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D66102%26type%3Dstudent_report">น.ส. สุภาพร ใจงาม</a></td>
+  <td>ม.6</td><td>1</td><td>22/11/2550</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "22/11/2550", "id": "66102", "level": "\u0e21.6", "name": "\u0e19.\u0e2a. \u0e2a\u0e38\u0e20\u0e32\u0e1e\u0e23 \u0e43\u0e08\u0e07\u0e32\u0e21", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/66102" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/66102" class="inline" onsubmit="return confirm('ลบ น.ส. สุภาพร ใจงาม ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.6" data-room="1" data-text="66103 น.ส. มานี ศรีสุข">
+  <td>66103</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D66103%26type%3Dstudent_report">น.ส. มานี ศรีสุข</a></td>
+  <td>ม.6</td><td>1</td><td>07/12/2550</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "07/12/2550", "id": "66103", "level": "\u0e21.6", "name": "\u0e19.\u0e2a. \u0e21\u0e32\u0e19\u0e35 \u0e28\u0e23\u0e35\u0e2a\u0e38\u0e02", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/66103" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/66103" class="inline" onsubmit="return confirm('ลบ น.ส. มานี ศรีสุข ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.6" data-room="1" data-text="66104 นาย สมชาย ศรีสุข">
+  <td>66104</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D66104%26type%3Dstudent_report">นาย สมชาย ศรีสุข</a></td>
+  <td>ม.6</td><td>1</td><td>13/07/2550</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "13/07/2550", "id": "66104", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e2a\u0e21\u0e0a\u0e32\u0e22 \u0e28\u0e23\u0e35\u0e2a\u0e38\u0e02", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/66104" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/66104" class="inline" onsubmit="return confirm('ลบ นาย สมชาย ศรีสุข ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.6" data-room="1" data-text="66105 นาย ธนกร มั่นคง">
+  <td>66105</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D66105%26type%3Dstudent_report">นาย ธนกร มั่นคง</a></td>
+  <td>ม.6</td><td>1</td><td>25/02/2550</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "25/02/2550", "id": "66105", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e18\u0e19\u0e01\u0e23 \u0e21\u0e31\u0e48\u0e19\u0e04\u0e07", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/66105" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/66105" class="inline" onsubmit="return confirm('ลบ นาย ธนกร มั่นคง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.6" data-room="1" data-text="66106 น.ส. สุภาพร สุขใจ">
+  <td>66106</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D66106%26type%3Dstudent_report">น.ส. สุภาพร สุขใจ</a></td>
+  <td>ม.6</td><td>1</td><td>12/04/2550</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "12/04/2550", "id": "66106", "level": "\u0e21.6", "name": "\u0e19.\u0e2a. \u0e2a\u0e38\u0e20\u0e32\u0e1e\u0e23 \u0e2a\u0e38\u0e02\u0e43\u0e08", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/66106" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/66106" class="inline" onsubmit="return confirm('ลบ น.ส. สุภาพร สุขใจ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.6" data-room="1" data-text="66107 นาย พงษ์พัฒน์ ศรีสุข">
+  <td>66107</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D66107%26type%3Dstudent_report">นาย พงษ์พัฒน์ ศรีสุข</a></td>
+  <td>ม.6</td><td>1</td><td>10/07/2550</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "10/07/2550", "id": "66107", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e1e\u0e07\u0e29\u0e4c\u0e1e\u0e31\u0e12\u0e19\u0e4c \u0e28\u0e23\u0e35\u0e2a\u0e38\u0e02", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/66107" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/66107" class="inline" onsubmit="return confirm('ลบ นาย พงษ์พัฒน์ ศรีสุข ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.6" data-room="1" data-text="66108 นาย รัชชานนท์ ไพเราะ">
+  <td>66108</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D66108%26type%3Dstudent_report">นาย รัชชานนท์ ไพเราะ</a></td>
+  <td>ม.6</td><td>1</td><td>12/03/2550</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "12/03/2550", "id": "66108", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e23\u0e31\u0e0a\u0e0a\u0e32\u0e19\u0e19\u0e17\u0e4c \u0e44\u0e1e\u0e40\u0e23\u0e32\u0e30", "room": "1"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/66108" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/66108" class="inline" onsubmit="return confirm('ลบ นาย รัชชานนท์ ไพเราะ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.6" data-room="2" data-text="66201 นาย พงษ์พัฒน์ แสงทอง">
+  <td>66201</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D66201%26type%3Dstudent_report">นาย พงษ์พัฒน์ แสงทอง</a></td>
+  <td>ม.6</td><td>2</td><td>04/09/2550</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "04/09/2550", "id": "66201", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e1e\u0e07\u0e29\u0e4c\u0e1e\u0e31\u0e12\u0e19\u0e4c \u0e41\u0e2a\u0e07\u0e17\u0e2d\u0e07", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/66201" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/66201" class="inline" onsubmit="return confirm('ลบ นาย พงษ์พัฒน์ แสงทอง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.6" data-room="2" data-text="66202 นาย พงษ์พัฒน์ สุขใจ">
+  <td>66202</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D66202%26type%3Dstudent_report">นาย พงษ์พัฒน์ สุขใจ</a></td>
+  <td>ม.6</td><td>2</td><td>16/11/2550</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "16/11/2550", "id": "66202", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e1e\u0e07\u0e29\u0e4c\u0e1e\u0e31\u0e12\u0e19\u0e4c \u0e2a\u0e38\u0e02\u0e43\u0e08", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/66202" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/66202" class="inline" onsubmit="return confirm('ลบ นาย พงษ์พัฒน์ สุขใจ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.6" data-room="2" data-text="66203 นาย อนุชา ไพเราะ">
+  <td>66203</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D66203%26type%3Dstudent_report">นาย อนุชา ไพเราะ</a></td>
+  <td>ม.6</td><td>2</td><td>25/03/2550</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "25/03/2550", "id": "66203", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e2d\u0e19\u0e38\u0e0a\u0e32 \u0e44\u0e1e\u0e40\u0e23\u0e32\u0e30", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/66203" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/66203" class="inline" onsubmit="return confirm('ลบ นาย อนุชา ไพเราะ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.6" data-room="2" data-text="66204 นาย เจษฎา มั่นคง">
+  <td>66204</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D66204%26type%3Dstudent_report">นาย เจษฎา มั่นคง</a></td>
+  <td>ม.6</td><td>2</td><td>27/08/2550</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "27/08/2550", "id": "66204", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e40\u0e08\u0e29\u0e0e\u0e32 \u0e21\u0e31\u0e48\u0e19\u0e04\u0e07", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/66204" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/66204" class="inline" onsubmit="return confirm('ลบ นาย เจษฎา มั่นคง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.6" data-room="2" data-text="66205 นาย ปิติ กล้าหาญ">
+  <td>66205</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D66205%26type%3Dstudent_report">นาย ปิติ กล้าหาญ</a></td>
+  <td>ม.6</td><td>2</td><td>13/09/2550</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "13/09/2550", "id": "66205", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e1b\u0e34\u0e15\u0e34 \u0e01\u0e25\u0e49\u0e32\u0e2b\u0e32\u0e0d", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/66205" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/66205" class="inline" onsubmit="return confirm('ลบ นาย ปิติ กล้าหาญ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.6" data-room="2" data-text="66206 น.ส. ปาริชาติ กล้าหาญ">
+  <td>66206</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D66206%26type%3Dstudent_report">น.ส. ปาริชาติ กล้าหาญ</a></td>
+  <td>ม.6</td><td>2</td><td>03/04/2550</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "03/04/2550", "id": "66206", "level": "\u0e21.6", "name": "\u0e19.\u0e2a. \u0e1b\u0e32\u0e23\u0e34\u0e0a\u0e32\u0e15\u0e34 \u0e01\u0e25\u0e49\u0e32\u0e2b\u0e32\u0e0d", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/66206" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/66206" class="inline" onsubmit="return confirm('ลบ น.ส. ปาริชาติ กล้าหาญ ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.6" data-room="2" data-text="66207 นาย นนทพัทธ์ เจริญผล">
+  <td>66207</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D66207%26type%3Dstudent_report">นาย นนทพัทธ์ เจริญผล</a></td>
+  <td>ม.6</td><td>2</td><td>06/07/2550</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "06/07/2550", "id": "66207", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e19\u0e19\u0e17\u0e1e\u0e31\u0e17\u0e18\u0e4c \u0e40\u0e08\u0e23\u0e34\u0e0d\u0e1c\u0e25", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/66207" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/66207" class="inline" onsubmit="return confirm('ลบ นาย นนทพัทธ์ เจริญผล ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr>
+ <tr data-level="ม.6" data-room="2" data-text="66208 นาย สมชาย มั่นคง">
+  <td>66208</td><td><a class="text-indigo-700 hover:underline" href="print.html?k=%2Freport_print%3Fsid%3D66208%26type%3Dstudent_report">นาย สมชาย มั่นคง</a></td>
+  <td>ม.6</td><td>2</td><td>22/03/2550</td>
+  <td class="no-export no-print whitespace-nowrap">
+   <button class="btn btn-gray btn-sm" onclick='openForm({"birth": "22/03/2550", "id": "66208", "level": "\u0e21.6", "name": "\u0e19\u0e32\u0e22 \u0e2a\u0e21\u0e0a\u0e32\u0e22 \u0e21\u0e31\u0e48\u0e19\u0e04\u0e07", "room": "2"})'>แก้ไข</button>
+   <form method="post" action="/students/reset/66208" class="inline" onsubmit="return confirm('รีเซ็ตรหัสผ่านเป็นค่าเริ่มต้น?')"><button class="btn btn-gray btn-sm">รีเซ็ตรหัส</button></form>
+   <form method="post" action="/students/delete/66208" class="inline" onsubmit="return confirm('ลบ นาย สมชาย มั่นคง ?')"><button class="btn btn-red btn-sm">ลบ</button></form>
+  </td></tr></tbody></table></div>
+
+<dialog id="dlg" class="rounded-2xl p-0 w-full max-w-md"><form method="post" action="/students/save" class="p-6 space-y-3">
+ <h2 class="font-bold text-lg" id="dtitle">เพิ่มนักเรียน</h2>
+ <input type="hidden" name="old_id" id="f_old">
+ <input name="id" id="f_id" class="inp" placeholder="รหัสนักเรียน" required>
+ <input name="name" id="f_name" class="inp" placeholder="ชื่อ-สกุล" required>
+ <div class="grid grid-cols-2 gap-2">
+  <select name="level" id="f_level" class="inp" onchange="fillRooms(f_room,this.value,'')"><option>ม.1</option><option>ม.2</option><option>ม.3</option><option>ม.4</option><option>ม.5</option><option>ม.6</option></select>
+  <select name="room" id="f_room" class="inp"></select></div>
+ <input name="birth" id="f_birth" class="inp" placeholder="วันเกิด เช่น 14/03/2555">
+ <div class="flex justify-end gap-2"><button type="button" class="btn btn-gray" onclick="dlg.close()">ยกเลิก</button><button class="btn">บันทึก</button></div>
+</form></dialog>
+</main></div>
+<script>
+// ---------- ส่วนช่วย: ส่งออก Excel / Word / PDF / พิมพ์ (อ่านข้อมูลจากตารางที่เห็นอยู่) ----------
+function tableData(id){
+  const out=[];
+  document.querySelectorAll('#'+id+' tr').forEach(tr=>{
+    if(tr.style.display==='none') return;
+    out.push([...tr.children].filter(c=>!c.classList.contains('no-export')).map(c=>{
+      const i=c.querySelector('input,select'); const t=(i?i.value:c.innerText).trim();
+      return (/^-?[1-9]\d{0,6}(\.\d+)?$/.test(t))?Number(t):t;}));
+  });
+  return out;
+}
+function htmlTable(id){
+  const t=document.getElementById(id), d=tableData(id);
+  let h='<h2 style="font-family:Prompt,sans-serif">'+t.dataset.title+'</h2><p style="font-family:Prompt,sans-serif">'+(t.dataset.sub||'')+'</p>';
+  h+='<table border="1" cellspacing="0" cellpadding="5" style="border-collapse:collapse;font-family:Prompt,sans-serif;font-size:12px">';
+  d.forEach((r,i)=>{h+='<tr>'+r.map(c=>(i==0?'<th style="background:#eef2ff">':'<td>')+c+(i==0?'</th>':'</td>')).join('')+'</tr>'});
+  return h+'</table>';
+}
+function exportExcel(id){const t=document.getElementById(id);const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet([[t.dataset.title],[t.dataset.sub||''],[]].concat(tableData(id))),'คะแนน');
+  XLSX.writeFile(wb,t.dataset.title+'.xlsx');}
+function exportWord(id){const t=document.getElementById(id);
+  const html='<html><head><meta charset="utf-8"></head><body>'+htmlTable(id)+'</body></html>';
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+html],{type:'application/msword'}));
+  a.download=t.dataset.title+'.doc';a.click();}
+function exportPDF(id){const t=document.getElementById(id);
+  html2pdf().set({margin:10,filename:t.dataset.title+'.pdf',html2canvas:{scale:2},
+    jsPDF:{unit:'mm',format:'a4',orientation:tableData(id)[0].length>7?'landscape':'portrait'}}).from(htmlTable(id),'string').save();}
+function exportBar(id){return `<span class="no-print flex flex-wrap gap-2">
+  <button class="btn btn-gray btn-sm" onclick="window.print()">🖨️ พิมพ์</button>
+  <button class="btn btn-gray btn-sm" onclick="exportPDF('${id}')">📄 PDF</button>
+  <button class="btn btn-gray btn-sm" onclick="exportExcel('${id}')">📗 Excel</button>
+  <button class="btn btn-gray btn-sm" onclick="exportWord('${id}')">📘 Word</button></span>`;}
+document.querySelectorAll('[data-exportbar]').forEach(e=>e.innerHTML=exportBar(e.dataset.exportbar));
+// ---------- ส่วนช่วย: เลือกชั้น -> ห้อง ----------
+const LEVELS=[{"name": "\u0e21.1", "rooms": ["1", "2"]}, {"name": "\u0e21.2", "rooms": ["1", "2"]}, {"name": "\u0e21.3", "rooms": ["1", "2"]}, {"name": "\u0e21.4", "rooms": ["1", "2"]}, {"name": "\u0e21.5", "rooms": ["1", "2"]}, {"name": "\u0e21.6", "rooms": ["1", "2"]}];
+function fillRooms(sel,level,keep,all){
+  const rooms=(LEVELS.find(l=>l.name===level)||{rooms:[]}).rooms;
+  sel.innerHTML=(all?'<option value="">ทุกห้อง</option>':'')+rooms.map(r=>`<option ${r===keep?'selected':''}>${r}</option>`).join('');
+}
+</script>
+<script>
+// ---------- ค้นหา + กรองชั้น/ห้อง (ทำงานทันทีที่พิมพ์) ----------
+function applyFilter(){
+ const q=document.getElementById('q').value.toLowerCase(), lv=fLevel.value, rm=fRoom.value; let n=0;
+ document.querySelectorAll('#tbl tbody tr').forEach(tr=>{
+  const ok=(!q||tr.dataset.text.toLowerCase().includes(q))&&(!lv||tr.dataset.level===lv)&&(!rm||tr.dataset.room===rm);
+  tr.style.display=ok?'':'none'; if(ok)n++;});
+ document.getElementById('count').textContent=n+' คน';}
+// ---------- ฟอร์มเพิ่ม/แก้ไขนักเรียน ----------
+function openForm(s){
+ s=s||{}; dtitle.textContent=s.id?'แก้ไขนักเรียน':'เพิ่มนักเรียน';
+ f_old.value=s.id||''; f_id.value=s.id||''; f_name.value=s.name||''; f_birth.value=s.birth||'';
+ if(s.level) f_level.value=s.level; fillRooms(f_room,f_level.value,s.room||''); dlg.showModal();}
+applyFilter();
+</script>
+</body></html>
